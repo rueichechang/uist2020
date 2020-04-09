@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    tools:context=".MainActivity"
+    android:background="@color/white"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="280dp"
+            android:orientation="vertical"
+            android:weightSum="3"
+            android:padding="10px">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="45645646545646545456456465456465454564564654"
+                    android:textColor="@color/black"
+                    android:id="@+id/top"
+                    android:textSize="10dp"/>
+
+                <ImageView
+                    android:id="@+id/top_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:src="@drawable/button_top">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="45645646545646545456456465456465454564564654"
+                    android:textColor="@color/black"
+                    android:id="@+id/middle"
+                    android:textSize="10dp"/>
+
+                <ImageView
+                    android:id="@+id/mid_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:src="@drawable/button_mid">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="45645646545646545456456465456465454564564654"
+                    android:textColor="@color/black"
+                    android:id="@+id/bottom"
+                    android:textSize="10dp"/>
+
+                <ImageView
+                    android:id="@+id/bot_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:src="@drawable/button_video">
+                </ImageView>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/preview_framelayout">
+
+
+            <com.otaliastudios.cameraview.CameraView
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:keepScreenOn="true">
+<!--                <TextView-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_gravity="right"-->
+<!--                    android:background="@color/white">-->
+
+<!--                </TextView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_gravity="bottom"-->
+<!--                    android:background="@color/white">-->
+
+<!--                </TextView>-->
+
+                <ImageView
+                    android:id="@+id/overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|end"
+                    app:layout_drawOnPictureSnapshot="false"
+                    app:layout_drawOnPreview="true"
+                    app:layout_drawOnVideoSnapshot="false" />
+                />
+
+                <ImageView
+                    android:id="@+id/autofritz"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|end"
+                    app:layout_drawOnPictureSnapshot="false"
+                    app:layout_drawOnPreview="true"
+                    app:layout_drawOnVideoSnapshot="false" />
+                />
+
+
+            </com.otaliastudios.cameraview.CameraView>
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/ambient_top_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:background="@drawable/mybutton"
+            android:text="ambient tips1"
+            android:textColor="@android:color/black"
+            android:textSize="15dp"
+            android:textAllCaps="false">
+        </Button>
+
+        <Button
+            android:id="@+id/ambient_bot_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/mybutton"
+            android:text="ambient tips2"
+            android:textColor="@android:color/black"
+            android:textSize="15dp"
+            android:textAllCaps="false">
+        </Button>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/calibration"
+        android:text="TOUCH"
+        android:background="@color/darkred"
+        android:textSize="50dp">
+    </Button>
+
+
+</FrameLayout>

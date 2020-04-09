@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="darkred">#808B0000</color>
+    <color name="blue">#0066cc</color>
+    <color name="gold">#e6b121</color>
+    <color name="grey">#cccccc</color>
+
+    <color name="opblack">#80000000</color>
+    <color name="opred">#80FF0000</color>
+    <color name="opdarkred">#808B0000</color>
+    <color name="opblue">#800000FF</color>
+    <color name="opdarkblue">#800000A0</color>
+    <color name="oporange">#80FF4500</color>
+    <color name="opwhite">#1AFFFFFF</color>
+    <color name="opyellow">#80FFFF00</color>
+
+</resources>

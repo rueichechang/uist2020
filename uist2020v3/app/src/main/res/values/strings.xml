@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">uist2020v3</string>
+    <string name="calibrate">Touch Screen to Calibrate</string>
+
+    <string name="style_connectPosNeg">Begin by connecting power and ground rails.</string>
+    <string name="style_ICfirst">Insert IC first if you need it.</string>
+
+    <string name="unitTestIni">Unit test trial here for you</string>
+    <string name="button_unittest">Test: Press and release button can yield 1 or 0. </string>
+    <string name="LCD_unittest">Test: Follow the test code in Arduino.</string>
+    <string name="trimpot_unittest"></string>
+    <string name="temperature_unittest">Connect 5V, ground and pin for analogRead.</string>
+
+    <string name="LCD_tips">LCD: Read the overlayed datasheet carefully.</string>
+    <string name="button_tips">Button: A,B and C,D are always connected. \n Resistor to 5V and black to ground. </string>
+    <string name="trimpot_tips">Trimpot: 5V and GND can be exchanged. </string>
+    <string name="temperature_tips">From the top view of sensor, the left pin is 5V and the right is ground.</string>
+
+
+    <string name="button_top">Button: A and B are always connected, C and D either. \nInput and Digital </string>
+</resources>
