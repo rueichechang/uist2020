@@ -1014,17 +1014,7 @@ public class MainActivity extends AppCompatActivity {
                 final String name_tmp = this.name;
                 FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
                 button.setTag(name);
-//                button.setBackgroundResource(android.R.drawable.btn_star);
-//                RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
-//                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//
-//                rel_btn.leftMargin = (int) boxes.get(0).x;
-//                rel_btn.topMargin = (int) boxes.get(0).y;
-//                rel_btn.width = 60;
-//                rel_btn.height = 60;
-
                 button.setBackgroundColor(getResources().getColor(R.color.opwhite));
-
                 RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1213,9 +1203,7 @@ public class MainActivity extends AppCompatActivity {
             bot_image.setImageResource(R.drawable.lcd_video);
 
         }
-
-        else{
-        }
+        else{ }
     }
     private static class MyTaskParams {
         String command;
