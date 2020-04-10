@@ -538,219 +538,206 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Bitmap AutoFritz (Bitmap input_bmp, Electronics electronic){
+
         Bitmap temp;
         if (input_bmp != null) temp = input_bmp;
-        else temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+        else
+            temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+        try {
+            Canvas canvas = new Canvas(temp);
+            Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor);
 
-        Canvas canvas = new Canvas(temp);
-        Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor);
+            Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
+            white.setColor(getResources().getColor(R.color.opwhite));
+            white.setTextSize(30);
+            white.setFakeBoldText(true);
+            white.setStrokeWidth(10);
 
-        Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
-        white.setColor(getResources().getColor(R.color.opwhite));
-        white.setTextSize(30);
-        white.setFakeBoldText(true);
-        white.setStrokeWidth(10);
+            Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
+            red.setColor(getResources().getColor(R.color.opred));
+            red.setStrokeWidth(10);
+            red.setTextSize(30);
+            red.setFakeBoldText(true);
 
-        Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
-        red.setColor(getResources().getColor(R.color.opred));
-        red.setStrokeWidth(10);
-        red.setTextSize(30);
-        red.setFakeBoldText(true);
+            Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
+            black.setColor(getResources().getColor(R.color.opblack));
+            black.setStrokeWidth(10);
+            black.setTextSize(30);
+            black.setFakeBoldText(true);
 
-        Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
-        black.setColor(getResources().getColor(R.color.opblack));
-        black.setStrokeWidth(10);
-        black.setTextSize(30);
-        black.setFakeBoldText(true);
+            Paint yellow = new Paint(Paint.ANTI_ALIAS_FLAG);
+            yellow.setColor(getResources().getColor(R.color.opyellow));
+            yellow.setTextSize(30);
+            yellow.setFakeBoldText(true);
+            yellow.setStrokeWidth(10);
 
-        Paint yellow = new Paint(Paint.ANTI_ALIAS_FLAG);
-        yellow.setColor(getResources().getColor(R.color.opyellow));
-        yellow.setTextSize(30);
-        yellow.setFakeBoldText(true);
-        yellow.setStrokeWidth(10);
-
-        Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
-        blue.setColor(getResources().getColor(R.color.opblue));
-        blue.setTextSize(30);
-        blue.setFakeBoldText(true);
-        blue.setStrokeWidth(10);
-
-
-        String name = electronic.name.substring(0,electronic.name.length()-2);
-
-        if (name.equals("IC")){
-            String datasheet_up [] = {"POWER 5V", "4A", "4Y", "GROUND", "GROUND", "3Y", "3A","3,4EN"};
-            String datasheet_down [] = {"1,2EN", "1A", "1Y", "GROUND", "GROUND", "2Y", "2A", "Motor Power"};
-
-            float x_start = 50;
-            float y_start = 100;
-
-            float x_start2 = 50;
-            float y_start2 = 650;
-
-            for (int i=0; i< datasheet_up.length; i++) {
-
-                Point pin_up = electronic.pins.get(i*2);
-                Point hole_up = holes_position[(int)pin_up.x].get((int)pin_up.y);
-
-                Point pin_down = electronic.pins.get(1+i*2);
-                Point hole_down = holes_position[(int)pin_down.x].get((int)pin_down.y);
-
-                canvas.drawText(datasheet_up[i], x_start, y_start, blue);
-                float temp1 = blue.measureText(datasheet_up[i]);
-                canvas.drawLine((float)hole_up.x + 10, (float)hole_up.y, x_start + temp1/2 , y_start + 20,blue);
-                x_start += temp1 + 50;
-
-                canvas.drawText(datasheet_down[i], x_start2, y_start2, red);
-                float temp2 = red.measureText(datasheet_down[i]);
-                canvas.drawLine((float)hole_down.x + 10, (float)hole_down.y, x_start2 + temp2/2 , y_start2 - 50,red);
-                x_start2 += temp2 + 50;
-            }
-
-        }
-        else if (name.equals("button")){
-            Point pin = getOtherPoint(electronic.pins.get(0));
-            Point hole = holes_position[(int)pin.x].get((int)pin.y);
-            Point tmp = getPosNegPoint(pin, POS);
-            Point pos = holes_position[(int)tmp.x].get((int)tmp.y);
-
-            Point pin1 = getOtherPoint(electronic.pins.get(2));
-            Point hole1 = holes_position[(int)pin1.x].get((int)pin1.y);
-            Point tmp1 = getPosNegPoint(pin1, NEG);
-            Point neg = holes_position[(int)tmp1.x].get((int)tmp1.y);
-
-            Point pin2 = getOtherPoint(electronic.pins.get(3));
-            Point hole2 = holes_position[(int)pin2.x].get((int)pin2.y);
+            Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
+            blue.setColor(getResources().getColor(R.color.opblue));
+            blue.setTextSize(30);
+            blue.setFakeBoldText(true);
+            blue.setStrokeWidth(10);
 
 
-//            canvas.drawBitmap(resistor, (int)hole.x, (int)hole.y, new Paint());
-//            float pic_size = 100;
-            float pic_width = 30;
-            float pic_height = 60;
-            float left = (float)(pos.x+hole.x)/2 - pic_width/2;
-            float top = (float)(pos.y+hole.y) /2 - pic_height/2;
+            String name = electronic.name.substring(0, electronic.name.length() - 2);
 
-            //autofritz the resistor to the 5V
-            canvas.drawLine((float)hole.x + 10, (float)hole.y+10, (float) pos.x + 10, (float) pos.y, white);
-            canvas.drawBitmap(resistor, null, new RectF(left, top,left+pic_width,top+pic_height),new Paint());
+            if (name.equals("IC")) {
+                String datasheet_up[] = {"POWER 5V", "4A", "4Y", "GROUND", "GROUND", "3Y", "3A", "3,4EN"};
+                String datasheet_down[] = {"1,2EN", "1A", "1Y", "GROUND", "GROUND", "2Y", "2A", "Motor Power"};
 
-            //draw the line connects to the ground
-            canvas.drawLine((float)hole1.x + 10, (float)hole1.y+10, (float) neg.x + 10, (float) neg.y, black);
+                float x_start = 50;
+                float y_start = 100;
 
-            //draw the point for digitalRead
-            canvas.drawRect((float) hole2.x, (float)hole2.y, (float) hole2.x+15 , (float) hole2.y+15, yellow);
-            canvas.drawText("digitalRead", (float) hole2.x - 100, (float) hole2.y + 80, yellow);
+                float x_start2 = 50;
+                float y_start2 = 650;
 
-//            datapic.setImageResource(R.drawable.button_datasheet);
-        }
-        else if (name.equals("trimpot") || name.equals("potentiometer")){
-            Point pin = getOtherPoint(electronic.pins.get(0));
-            Point hole = holes_position[(int)pin.x].get((int)pin.y);
-            Point tmp = getPosNegPoint(pin, POS);
-            Point pos = holes_position[(int)tmp.x].get((int)tmp.y);
+                for (int i = 0; i < datasheet_up.length; i++) {
 
-            Point pin1 = getOtherPoint(electronic.pins.get(2));
-            Point hole1 = holes_position[(int)pin1.x].get((int)pin1.y);
-            Point tmp1 = getPosNegPoint(pin1, NEG);
-            Point neg = holes_position[(int)tmp1.x].get((int)tmp1.y);
+                    Point pin_up = electronic.pins.get(i * 2);
+                    Point hole_up = holes_position[(int) pin_up.x].get((int) pin_up.y);
 
-            Point pin2 = getOtherPoint(electronic.pins.get(1));
-            Point hole2 = holes_position[(int)pin2.x].get((int)pin2.y);
+                    Point pin_down = electronic.pins.get(1 + i * 2);
+                    Point hole_down = holes_position[(int) pin_down.x].get((int) pin_down.y);
 
-            //autofritz the resistor to the 5V
-            canvas.drawLine((float)hole.x + 10, (float)hole.y + 10, (float) pos.x + 10, (float) pos.y, red);
-            //draw the line connects to the ground
-            canvas.drawLine((float)hole1.x + 10, (float)hole1.y +10, (float) neg.x + 10, (float) neg.y, black);
-            //draw the point for digitalRead
-            canvas.drawRect((float) hole2.x, (float)hole2.y, (float) hole2.x+15 , (float) hole2.y+15, yellow);
-            canvas.drawText("analogRead", (float) hole2.x - 100, (float) hole2.y + 30, yellow);
-            //trimpot
-//            datapic.setImageResource(R.drawable.trimpot_datasheet);
-        }
-        else if (name.equals("LCD")){
-            String datasheet [] = {"GROUND", "POWER", "analog", "RS","GROUND", "EN","","","","", "d4","d5","d6","d7", "POWER", "GROUND"};
-            int tmp = 0;
+                    canvas.drawText(datasheet_up[i], x_start, y_start, blue);
+                    float temp1 = blue.measureText(datasheet_up[i]);
+                    canvas.drawLine((float) hole_up.x + 10, (float) hole_up.y, x_start + temp1 / 2, y_start + 20, blue);
+                    x_start += temp1 + 50;
 
-            float x_start = 10;
-            float y_start = 150;
-
-            for (Point pin : electronic.pins){
-                Point pinpin = getOtherPointReverse(pin);
-                Point hole = holes_position[(int)pinpin.x].get((int)pinpin.y);
-                Point tmpPos = getPosNegPoint(pin, POS);
-                Point pos = holes_position[(int)tmpPos.x].get((int)tmpPos.y);
-                Point tmpNeg = getPosNegPoint(pin, POS);
-                Point neg = holes_position[(int)tmpNeg.x].get((int)tmpNeg.y);
-
-                if (tmp == 0 || tmp == 15 || tmp == 4){
-                    float space = black.measureText(datasheet[tmp]);
-                    canvas.drawLine((float)hole.x, (float)hole.y,x_start + space/2 , y_start+10, black);
-                    canvas.drawText(datasheet[tmp], x_start, y_start, black);
-                    x_start += space + 30;
+                    canvas.drawText(datasheet_down[i], x_start2, y_start2, red);
+                    float temp2 = red.measureText(datasheet_down[i]);
+                    canvas.drawLine((float) hole_down.x + 10, (float) hole_down.y, x_start2 + temp2 / 2, y_start2 - 50, red);
+                    x_start2 += temp2 + 50;
                 }
-                else if (tmp == 1 || tmp == 14){
-                    float space = red.measureText(datasheet[tmp]);
-                    canvas.drawLine((float)hole.x, (float)hole.y,x_start + space/2 , y_start+10, red);
-                    canvas.drawText(datasheet[tmp], x_start, y_start, red);
-                    x_start += space + 30;
 
-                }
-                else if (tmp == 2){
-                    //if there is trimpot in the circuit
-                    Point trimpotPin = null;
-                    for (Electronics electronics : currentComponents){
-                        String nametmp = electronics.name.substring(0,electronic.name.length()-2);
-                        if (nametmp.equals("trimpot")) trimpotPin = electronics.pins.get(1);
-                    }
-                    if (trimpotPin == null) {
+            } else if (name.equals("button")) {
+                Point pin = getOtherPoint(electronic.pins.get(0));
+                Point hole = holes_position[(int) pin.x].get((int) pin.y);
+                Point tmp = getPosNegPoint(pin, POS);
+                Point pos = holes_position[(int) tmp.x].get((int) tmp.y);
+
+                Point pin1 = getOtherPoint(electronic.pins.get(2));
+                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y);
+                Point tmp1 = getPosNegPoint(pin1, NEG);
+                Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
+
+                Point pin2 = getOtherPoint(electronic.pins.get(3));
+                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
+
+                float pic_width = 30;
+                float pic_height = 60;
+                float left = (float) (pos.x + hole.x) / 2 - pic_width / 2;
+                float top = (float) (pos.y + hole.y) / 2 - pic_height / 2;
+
+                //autofritz the resistor to the 5V
+                canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, white);
+                canvas.drawBitmap(resistor, null, new RectF(left, top, left + pic_width, top + pic_height), new Paint());
+
+                //draw the line connects to the ground
+                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, black);
+
+                //draw the point for digitalRead
+                canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
+                canvas.drawText("digitalRead", (float) hole2.x - 100, (float) hole2.y + 80, yellow);
+
+            } else if (name.equals("trimpot") || name.equals("potentiometer")) {
+                Point pin = getOtherPoint(electronic.pins.get(0));
+                Point hole = holes_position[(int) pin.x].get((int) pin.y);
+                Point tmp = getPosNegPoint(pin, POS);
+                Point pos = holes_position[(int) tmp.x].get((int) tmp.y);
+
+                Point pin1 = getOtherPoint(electronic.pins.get(2));
+                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y);
+                Point tmp1 = getPosNegPoint(pin1, NEG);
+                Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
+
+                Point pin2 = getOtherPoint(electronic.pins.get(1));
+                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
+
+                //autofritz the resistor to the 5V
+                canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, red);
+                //draw the line connects to the ground
+                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, black);
+                //draw the point for digitalRead
+                canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
+                canvas.drawText("analogRead", (float) hole2.x - 100, (float) hole2.y + 30, yellow);
+            } else if (name.equals("LCD")) {
+                String datasheet[] = {"GROUND", "POWER", "analog", "RS", "GROUND", "EN", "", "", "", "", "d4", "d5", "d6", "d7", "POWER", "GROUND"};
+                int tmp = 0;
+
+                float x_start = 10;
+                float y_start = 150;
+
+                for (Point pin : electronic.pins) {
+                    Point pinpin = getOtherPointReverse(pin);
+                    Point hole = holes_position[(int) pinpin.x].get((int) pinpin.y);
+                    Point tmpPos = getPosNegPoint(pin, POS);
+                    Point pos = holes_position[(int) tmpPos.x].get((int) tmpPos.y);
+                    Point tmpNeg = getPosNegPoint(pin, POS);
+                    Point neg = holes_position[(int) tmpNeg.x].get((int) tmpNeg.y);
+
+                    if (tmp == 0 || tmp == 15 || tmp == 4) {
+                        float space = black.measureText(datasheet[tmp]);
+                        canvas.drawLine((float) hole.x, (float) hole.y, x_start + space / 2, y_start + 10, black);
+                        canvas.drawText(datasheet[tmp], x_start, y_start, black);
+                        x_start += space + 30;
+                    } else if (tmp == 1 || tmp == 14) {
+                        float space = red.measureText(datasheet[tmp]);
+                        canvas.drawLine((float) hole.x, (float) hole.y, x_start + space / 2, y_start + 10, red);
+                        canvas.drawText(datasheet[tmp], x_start, y_start, red);
+                        x_start += space + 30;
+
+                    } else if (tmp == 2) {
+                        //if there is trimpot in the circuit
+                        Point trimpotPin = null;
+                        for (Electronics electronics : currentComponents) {
+                            String nametmp = electronics.name.substring(0, electronic.name.length() - 2);
+                            if (nametmp.equals("trimpot")) trimpotPin = electronics.pins.get(1);
+                        }
+                        if (trimpotPin == null) {
+                            float space = yellow.measureText(datasheet[tmp]);
+                            canvas.drawLine((float) hole.x, (float) hole.y, x_start + space / 2, y_start + 10, yellow);
+                            canvas.drawText(datasheet[tmp], x_start, y_start, yellow);
+                            x_start += space + 30;
+                        } else {
+                            canvas.drawLine((float) hole.x, (float) hole.y, (float) trimpotPin.x + 10, (float) trimpotPin.y, red);
+                        }
+                    } else if (tmp == 3 || tmp == 5 || tmp == 10 || tmp == 11 || tmp == 12 || tmp == 13) {
                         float space = yellow.measureText(datasheet[tmp]);
-                        canvas.drawLine((float)hole.x, (float)hole.y,x_start + space/2 , y_start+10 ,yellow);
+                        canvas.drawLine((float) hole.x + 10, (float) hole.y, x_start + space / 2, y_start + 10, yellow);
                         canvas.drawText(datasheet[tmp], x_start, y_start, yellow);
                         x_start += space + 30;
-                    }else{
-                        canvas.drawLine((float)hole.x, (float)hole.y, (float) trimpotPin.x + 10, (float) trimpotPin.y, red);
                     }
+
+
+                    tmp++;
                 }
-                else if (tmp ==3 || tmp ==5 || tmp ==10 || tmp ==11 || tmp == 12 || tmp == 13){
-                    float space = yellow.measureText(datasheet[tmp]);
-                    canvas.drawLine((float)hole.x + 10, (float)hole.y,x_start + space/2 , y_start+10, yellow);
-                    canvas.drawText(datasheet[tmp], x_start, y_start, yellow);
-                    x_start += space + 30;
-                }
+            } else if (name.equals("transistor")) {
+                Point pin = getOtherPoint(electronic.pins.get(0));
+                Point hole = holes_position[(int) pin.x].get((int) pin.y);
+
+                Point pin1 = getOtherPoint(electronic.pins.get(1));
+                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y);
+                Point tmp = getPosNegPoint(pin1, POS);
+                Point pos = holes_position[(int) tmp.x].get((int) tmp.y);
+
+                Point pin2 = getOtherPoint(electronic.pins.get(2));
+                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
+                Point tmp1 = getPosNegPoint(pin2, NEG);
+                Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
+
+                canvas.drawRect((float) hole.x, (float) hole.y, (float) hole.x + 15, (float) hole.y + 15, yellow);
+                canvas.drawText("digitalWrite", (float) hole.x - 100, (float) hole.y + 30, yellow);
+
+                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) pos.x + 10, (float) pos.y, red);
+                canvas.drawLine((float) hole2.x + 10, (float) hole2.y + 10, (float) neg.x + 10, (float) neg.y, black);
 
 
-
-                tmp++;
             }
-        }
-
-        else if (name.equals("transistor")){
-            Point pin = getOtherPoint(electronic.pins.get(0));
-            Point hole = holes_position[(int)pin.x].get((int)pin.y);
-
-            Point pin1 = getOtherPoint(electronic.pins.get(1));
-            Point hole1 = holes_position[(int)pin1.x].get((int)pin1.y);
-            Point tmp = getPosNegPoint(pin1, POS);
-            Point pos = holes_position[(int)tmp.x].get((int)tmp.y);
-
-            Point pin2 = getOtherPoint(electronic.pins.get(2));
-            Point hole2 = holes_position[(int)pin2.x].get((int)pin2.y);
-            Point tmp1 = getPosNegPoint(pin2, NEG);
-            Point neg = holes_position[(int)tmp1.x].get((int)tmp1.y);
-
-            canvas.drawRect((float) hole.x, (float)hole.y, (float) hole.x+15 , (float) hole.y+15, yellow);
-            canvas.drawText("digitalWrite", (float) hole.x - 100, (float) hole.y + 30, yellow);
-
-            canvas.drawLine((float)hole1.x + 10, (float)hole1.y +10, (float) pos.x + 10, (float) pos.y, red);
-            canvas.drawLine((float)hole2.x + 10, (float)hole2.y +10, (float) neg.x + 10, (float) neg.y, black);
 
 
-        }
+            autofritz.setImageBitmap(temp);
 
-
-
-        autofritz.setImageBitmap(temp);
-
+        }catch(Exception e){}
         return temp;
     }
 
@@ -858,7 +845,8 @@ public class MainActivity extends AppCompatActivity {
                         tmp == 9 ||
                         tmp == 11) count++;
                 }
-                if (pre_code_num != 15 && count == 15) {
+                if (count-pre_code_num >= 2){
+//                if (pre_code_num != 15 && count == 15) {
                     commandToServer = "Object_Detect";
                     mCamera.takePicture();
                     Toast.makeText(getApplicationContext(), "update changes", Toast.LENGTH_SHORT).show();
@@ -1425,13 +1413,8 @@ public class MainActivity extends AppCompatActivity {
                         Button temp = findViewById(R.id.calibration);
                         temp.setBackgroundResource(android.R.drawable.btn_default);
                         temp.setVisibility(View.INVISIBLE);
-
-//                        repeatHandler.removeCallbacks(repeat_r);
                         snapHandler.post(snap_repeat);
 
-//                        instruction.clear();
-//                        updateInstructions(getString(R.string.style_connectPosNeg), null);
-//                        updateInstructions(getString(R.string.style_ICfirst), null);
                         VisualizeHoles(style_PosNeg(null,null));
                     }
                     Log.d("calibration", "successful" + Integer.toString(count_temp));
@@ -1529,8 +1512,6 @@ public class MainActivity extends AppCompatActivity {
                         rel_btn.width = Math.abs((int)(electronic.boxes.get(0).x - electronic.boxes.get(1).x));
                         rel_btn.height = Math.abs((int)(electronic.boxes.get(0).y - electronic.boxes.get(1).y));
 
-//                        rel_btn.width = 60;
-//                        rel_btn.height = 60;
 
                         button.setLayoutParams(rel_btn);
                         button.setOnClickListener(new View.OnClickListener() {
@@ -1557,15 +1538,23 @@ public class MainActivity extends AppCompatActivity {
                 updates++;
             }
             else if(input.substring(0,5).equals("oldcp")){
-                String name = input.substring(5).split(":")[0];
-                int i = 0;
-                for (Electronics electronic : currentComponents){
-                    if (electronic.name.equals(name))
-                        currentComponents.remove(i);
-                    i+=1;
-                }
-                numOfElectronics--;
-                updates++;
+                try {
+                    String name = input.substring(5).split(":")[0];
+                    int i = 0;
+                    for (Electronics electronic : currentComponents) {
+                        if (electronic.name.equals(name)) {
+                            currentComponents.remove(i);
+                            autofritz.setImageBitmap(null);
+                            overlay.setImageBitmap(null);
+                            ViewGroup layout = (ViewGroup) electronic.button.getParent();
+                            if(null!=layout) //for safety only  as you are doing onClick
+                                layout.removeView(electronic.button);
+                        }
+                        i += 1;
+                    }
+                    numOfElectronics--;
+                    updates++;
+                }catch(Exception e){}
             }
             else return;
         }else return;
