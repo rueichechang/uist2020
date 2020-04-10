@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private Button ambient_tips;
     private ImageView overlay;
     private ImageView autofritz;
-    private String app_num = "04";
+    private String app_num = "01";
     private String SERVERIP = "104.196.101.18";
 //    String SERVERIP = "172.20.10.2";
 
@@ -479,22 +479,22 @@ public class MainActivity extends AppCompatActivity {
         else temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
 
         //check first postive and negative connection
-        int countPosNeg = 0;
-        if(currentComponents != null && currentComponents.size() >= 2) {
-            for (Electronics electronic : currentComponents) {
-                String name = electronic.name.substring(0, electronic.name.length() - 2);
-                if (name.equals("wire")) {
-                    Point pin1 = electronic.pins.get(0);
-                    Point pin2 = electronic.pins.get(1);
-                    if ((pin1.x == 1 && pin2.x == 13) || (pin1.x == 0 && pin2.x == 12))
-                        countPosNeg++;
-                }
-            }
-        }
-        if(countPosNeg < 2 && updates <3){
-            Log.d("updateOverlay", "countPosNeg");
-            temp = style_PosNeg(temp, null);
-        }
+//        int countPosNeg = 0;
+//        if(currentComponents != null && currentComponents.size() >= 2) {
+//            for (Electronics electronic : currentComponents) {
+//                String name = electronic.name.substring(0, electronic.name.length() - 2);
+//                if (name.equals("wire")) {
+//                    Point pin1 = electronic.pins.get(0);
+//                    Point pin2 = electronic.pins.get(1);
+//                    if ((pin1.x == 1 && pin2.x == 13) || (pin1.x == 0 && pin2.x == 12))
+//                        countPosNeg++;
+//                }
+//            }
+//        }
+//        if(countPosNeg < 2 && updates <3){
+//            Log.d("updateOverlay", "countPosNeg");
+//            temp = style_PosNeg(temp, null);
+//        }
 
 //        temp = drawResistorValue(temp);
 //        temp = VisualizeCompoPins(temp);
@@ -548,7 +548,8 @@ public class MainActivity extends AppCompatActivity {
             Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor);
 
             Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
-            white.setColor(getResources().getColor(R.color.opwhite));
+            white.setColor(Color.WHITE);
+//            white.setColor(getResources().getColor(Color.WHITE);
             white.setTextSize(30);
             white.setFakeBoldText(true);
             white.setStrokeWidth(10);
@@ -556,24 +557,25 @@ public class MainActivity extends AppCompatActivity {
             Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
             red.setColor(getResources().getColor(R.color.opred));
             red.setStrokeWidth(10);
-            red.setTextSize(30);
+            red.setTextSize(40);
             red.setFakeBoldText(true);
 
             Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
             black.setColor(getResources().getColor(R.color.opblack));
             black.setStrokeWidth(10);
-            black.setTextSize(30);
+            black.setTextSize(40);
             black.setFakeBoldText(true);
 
             Paint yellow = new Paint(Paint.ANTI_ALIAS_FLAG);
-            yellow.setColor(getResources().getColor(R.color.opyellow));
-            yellow.setTextSize(30);
+            yellow.setColor(Color.YELLOW);
+//            yellow.setColor(getResources().getColor(R.color.opyellow));
+            yellow.setTextSize(40);
             yellow.setFakeBoldText(true);
             yellow.setStrokeWidth(10);
 
             Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
             blue.setColor(getResources().getColor(R.color.opblue));
-            blue.setTextSize(30);
+            blue.setTextSize(40);
             blue.setFakeBoldText(true);
             blue.setStrokeWidth(10);
 
@@ -625,19 +627,19 @@ public class MainActivity extends AppCompatActivity {
 
                 float pic_width = 30;
                 float pic_height = 60;
-                float left = (float) (pos.x + hole.x) / 2 - pic_width / 2;
-                float top = (float) (pos.y + hole.y) / 2 - pic_height / 2;
+                float left = (float) (neg.x + hole1.x) / 2 - pic_width / 2;
+                float top = (float) (neg.y + hole1.y) / 2 - pic_height / 2;
 
                 //autofritz the resistor to the 5V
-                canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, white);
+                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, white);
                 canvas.drawBitmap(resistor, null, new RectF(left, top, left + pic_width, top + pic_height), new Paint());
 
                 //draw the line connects to the ground
-                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, black);
+                canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, red);
 
                 //draw the point for digitalRead
                 canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
-                canvas.drawText("digitalRead", (float) hole2.x - 100, (float) hole2.y + 80, yellow);
+                canvas.drawText("digitalRead", (float) hole2.x - 200, (float) hole2.y + 0, yellow);
 
             } else if (name.equals("trimpot") || name.equals("potentiometer")) {
                 Point pin = getOtherPoint(electronic.pins.get(0));
@@ -711,7 +713,8 @@ public class MainActivity extends AppCompatActivity {
 
                     tmp++;
                 }
-            } else if (name.equals("transistor")) {
+            }
+            else if (name.equals("transistor")) {
                 Point pin = getOtherPoint(electronic.pins.get(0));
                 Point hole = holes_position[(int) pin.x].get((int) pin.y);
 
@@ -725,15 +728,24 @@ public class MainActivity extends AppCompatActivity {
                 Point tmp1 = getPosNegPoint(pin2, NEG);
                 Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
 
-                canvas.drawRect((float) hole.x, (float) hole.y, (float) hole.x + 15, (float) hole.y + 15, yellow);
-                canvas.drawText("digitalWrite", (float) hole.x - 100, (float) hole.y + 30, yellow);
 
-                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) pos.x + 10, (float) pos.y, red);
-                canvas.drawLine((float) hole2.x + 10, (float) hole2.y + 10, (float) neg.x + 10, (float) neg.y, black);
+                float x_start = (float) hole.x - 100;
+                float y_start = 100;
 
+                canvas.drawText("Base", x_start, y_start, yellow);
+                float temp1 = blue.measureText("Base");
+                canvas.drawLine((float) hole.x + 10, (float) hole.y, x_start + temp1 / 2, y_start + 20, yellow);
+                x_start += blue.measureText("Base") + 20;
 
+                canvas.drawText("Collector", x_start, y_start, red);
+                float temp2 = blue.measureText("Collector");
+                canvas.drawLine((float) hole1.x + 10, (float) hole1.y, x_start + temp2 / 2, y_start + 20, red);
+                x_start += blue.measureText("Collector") + 20;
+
+                canvas.drawText("Emitter", x_start, y_start, black);
+                float temp3 = blue.measureText("Emitter");
+                canvas.drawLine((float) hole2.x + 10, (float) hole2.y, x_start + temp3 / 2, y_start + 20, black);
             }
-
 
             autofritz.setImageBitmap(temp);
 
@@ -790,11 +802,11 @@ public class MainActivity extends AppCompatActivity {
         int result_y = 12;
 
         if (KEY == NEG) {
-            if (x >= 2 && x <= 6) result_x = 1;
-            else result_x = 13;
-        } else if (KEY == POS) {
             if (x >= 2 && x <= 6) result_x = 0;
             else result_x = 12;
+        } else if (KEY == POS) {
+            if (x >= 2 && x <= 6) result_x = 1;
+            else result_x = 13;
         }
 
         visualizeAllPosition();
@@ -845,7 +857,7 @@ public class MainActivity extends AppCompatActivity {
                         tmp == 9 ||
                         tmp == 11) count++;
                 }
-                if (count-pre_code_num >= 2){
+                if (count - pre_code_num >= 5){
 //                if (pre_code_num != 15 && count == 15) {
                     commandToServer = "Object_Detect";
                     mCamera.takePicture();
@@ -1052,17 +1064,20 @@ public class MainActivity extends AppCompatActivity {
             top_text.setText(Html.fromHtml(
                     "<h1>" + "Button </h1>" +
                             "<b> I/O Type: </b> Input" + "<br />" +
-                            "<b>" + "Pin Type:</b> Digital"));
+                            "<b>" + "Pin Type:</b> Digital"+
+                            "<b>" + "Note:</b> A和B、C和D永遠相連"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 5V and GND can be interchanged."  + "<br />" +
-                            "2. A and B are always connected (C and D either)."));
+                            "1. 記得要接220~10K歐姆的電阻，避免電流過大"  + "<br />" +
+                            "2. 注意digital read的pin"));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "LED radiates when button is pressed."));
+                            "<br />" + "LED radiates when button is pressed." + "<br />" +
+                            "<h1>" + "Press to watch video. </h1>"));
 
-            ambient_top_button.setText("Connect Resistor to power, wire to ground and yellow pin to arduino.");
-            ambient_bot_button.setText("Ensure the state of button changing when being pressed before moving on.");
+            ambient_top_button.setText("一邊接到Power，一邊接電阻到地，Arduino 接與地相連的Pin。");
+            ambient_bot_button.setText("利用產生的程式碼來確保button可以正常運作後才進下一步。");
+
 
             top_image.setImageResource(R.drawable.button_top);
             mid_image.setImageResource(R.drawable.button_mid);
@@ -1073,18 +1088,18 @@ public class MainActivity extends AppCompatActivity {
             top_text.setText(Html.fromHtml(
                     "<h1>" + "Trimpot </h1>" +
                             "<b> I/O Type: </b> Input" + "<br />" +
-                            "<b>" + "Pin Type:</b> Analog"));
+                            "<b>" + "Pin Type:</b> Analog" +
+                            "<b>" + "Note:</b> 5V和GND相反，讀取的值會相反"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 5V and GND can be interchanged."  + "<br />" +
-                            "2. Remember to connect Vout to analog pin."));
+                            "1. 記得利用analog pin來讀取值\n"  + "<br />" +
+                            "2. 正負可以相反"));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "LED radiates when button is pressed." + "<br />" +
-                            "<h1>" + "Press to watch video. </h1>"));
+                            "<br />" + "可以利用trimpot調整LED亮度." + "<br />"));
 
-            ambient_top_button.setText("Left pin to power, Right pin to ground and middle pin to analog pin of arduino.");
-            ambient_bot_button.setText("Ensure the value changing from 0-1023 when being rotated.");
+            ambient_top_button.setText("注意trimpot在麵包版上的空間分配.");
+            ambient_bot_button.setText("利用自動生成的程式碼，確保轉動時，analog值會改變.");
 
             top_image.setImageResource(R.drawable.trimpot_top);
             mid_image.setImageResource(R.drawable.trimpot_mid);
@@ -1099,14 +1114,15 @@ public class MainActivity extends AppCompatActivity {
                             "<b>" + "Pin Type:</b> Digital"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. Connect a resistor to base."  + "<br />" +
-                            "2. You can use it as a switch."));
+                            "1. 可以將transistor當作switch."  + "<br />" +
+                            "2. 記得collector給power，emitter接地." + "<br />" +
+                            "3. 馬達可以接在CE的迴路當中"));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "Using a faucet to explain how transistor works."));
+                            "<br />" + "Transistor的原理像水龍頭一樣，base就是轉頭，C是水源，E是水槽，電流則是水。\n"));
 
-            ambient_top_button.setText("Note that “base” should be connected with a resistor.");
-            ambient_bot_button.setText("Ensure your desired component is in the loop with transistor.");
+            ambient_top_button.setText("Base給高電壓，電流會從C留到E。");
+            ambient_bot_button.setText("利用生成的程式碼搭配馬達，來確認transistor可以正常運作。");
 
             top_image.setImageResource(R.drawable.transistor_top);
             mid_image.setImageResource(R.drawable.transistor_mid);
@@ -1142,18 +1158,16 @@ public class MainActivity extends AppCompatActivity {
                             "<br />" +
                             "<b>" + "Pin Type:</b> Analog"));
             mid_text.setText(Html.fromHtml(
-                    "<b>" + "Common errors:" + "</b>" +
-                            "<br />" + "A and B are always connected, C and D either."));
-            bot_text.setText(Html.fromHtml(
-                    "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "A and B are always connected, C and D either."));
+                    "<b>" + "Tips:" + "</b>" +
+                            "<br />" + "馬達通常被transistor或是IC(L293D)驅動." +
+                            "<br />" + "電源跟地相反，馬達轉動方向相反."));
 
-            ambient_top_button.setText("Auto: Connect left and right pins to power and ground, and middle pin to arduino");
-            ambient_bot_button.setText("Trimpot is variable resistor by rotating it");
+            ambient_top_button.setText("這邊可以利用5V來作為電源");
+            ambient_bot_button.setText("確保你的馬達正常運作");
 
-            top_image.setImageResource(R.drawable.transistor_top);
-            mid_image.setImageResource(R.drawable.transistor_mid);
-            bot_image.setImageResource(R.drawable.transistor_video);
+            top_image.setImageResource(R.drawable.motor_top);
+            mid_image.setImageResource(R.drawable.motor_mid);
+//            bot_image.setImageResource(R.drawable.transistor_video);
         }
 
         else if (name.equals("potentiometer")){
@@ -1452,11 +1466,13 @@ public class MainActivity extends AppCompatActivity {
 
                     String name = tagName.substring(0,tagName.length()-2);
                     int resistor_value = 0;
-                    if (name.equals("resistor") && name_points.length == 3)
-                        if (!name_points[2].equals("none")) {
-                            resistor_value = Integer.parseInt(name_points[2]);
-                            electronic.resistor_value = resistor_value;
-                        }
+                    try {
+                        if (name.equals("resistor") && name_points.length == 3)
+                            if (!name_points[2].equals("None")) {
+                                resistor_value = Integer.parseInt(name_points[2]);
+                                electronic.resistor_value = resistor_value;
+                            }
+                    }catch(Exception e){}
 
                     currentComponents.add(electronic);
 //                    currentComponents.add(new Electronics(tagName, input_points_list, input_pins_list));
