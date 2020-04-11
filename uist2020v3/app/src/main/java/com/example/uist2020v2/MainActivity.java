@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private Button ambient_tips;
     private ImageView overlay;
     private ImageView autofritz;
-    private String app_num = "01";
+    private String app_num = "06";
     private String SERVERIP = "104.196.101.18";
 //    String SERVERIP = "192.168.1.169";
 
@@ -993,7 +993,7 @@ public class MainActivity extends AppCompatActivity {
             String nametmp = name.substring(0,name.length()-2);
 
             if(button != null && (nametmp.equals("IC") || nametmp.equals("potentiometer") || nametmp.equals("trimpot") ||
-                    nametmp.equals("motor") || nametmp.equals("button"))) {
+                    nametmp.equals("motor") || nametmp.equals("button")) || nametmp.equals("transistor")) {
 
                 final String name_tmp = this.name;
                 FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
