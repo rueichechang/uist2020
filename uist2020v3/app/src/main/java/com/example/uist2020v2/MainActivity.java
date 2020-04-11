@@ -1007,8 +1007,7 @@ public class MainActivity extends AppCompatActivity {
 
                 rel_btn.width = Math.abs((int)(boxes.get(0).x - boxes.get(1).x));
                 rel_btn.height = Math.abs((int)(boxes.get(0).y - boxes.get(1).y));
-
-
+                
                 button.setLayoutParams(rel_btn);
 //            button.getBackground().setAlpha(64);
                 button.setOnClickListener(new View.OnClickListener() {
