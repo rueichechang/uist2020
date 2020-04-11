@@ -105,22 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:keepScreenOn="true">
-<!--                <TextView-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_gravity="right"-->
-<!--                    android:background="@color/white">-->
-
-<!--                </TextView>-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_gravity="bottom"-->
-<!--                    android:background="@color/white">-->
-
-<!--                </TextView>-->
-
                 <ImageView
                     android:id="@+id/overlay"
                     android:layout_width="match_parent"

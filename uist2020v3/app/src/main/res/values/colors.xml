@@ -16,7 +16,7 @@
     <color name="opblue">#800000FF</color>
     <color name="opdarkblue">#800000A0</color>
     <color name="oporange">#80FF4500</color>
-    <color name="opwhite">#1AFFFFFF</color>
+    <color name="opwhite">#33FFFFFF</color>
     <color name="opyellow">#80FFFF00</color>
 
 </resources>

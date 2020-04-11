@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView autofritz;
     private String app_num = "01";
     private String SERVERIP = "104.196.101.18";
-//    String SERVERIP = "172.20.10.2";
+//    String SERVERIP = "192.168.1.169";
 
     private boolean calibrating = false;
     private boolean buildtree = true;
@@ -202,16 +202,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onBitmapReady(Bitmap bitmap) {
                         Bitmap bmp = RotateBitmap(bitmap, -90);
-                        Log.d("checkhands", "take picture1");
                         Log.d("checkhands", "size.getWidth():" + size.getWidth());
                         Log.d("checkhands", "mCamera.getPictureSize().getWidth():" + mCamera.getPictureSize().getWidth());
-                        if(size.getWidth() == mCamera.getPictureSize().getWidth()){
+
+                        if(size.getWidth() == mCamera.getPictureSize().getWidth()) {
                             Log.d("checkhands", "take picture2");
                             MyTaskParams myTaskParams  = new MyTaskParams(bmp, commandToServer,null);
-//                            MyTaskParams myTaskParams  = new MyTaskParams(null, commandToServer,"1234567890");
                             SendToServer sendToServer = new SendToServer();
                             sendToServer.execute(myTaskParams);
-                        }else{
+                        } else {
                             Log.d("onBitmapReady", "checking hands");
                             if (isholesVisualize)
                                 checkHands(bmp);
@@ -221,19 +220,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mCamera.setPictureSize(new SizeSelector() {
+            @Override
+            public List<Size> select (List<Size> source) {
+                Log.d("SizeSelectorPic", source+"");
+                List<Size> lll = new ArrayList<Size>();
+                lll.add(source.get(4));
+                return lll;
+            }
+        });
+
         mCamera.setPreviewStreamSize(new SizeSelector() {
             @Override
             public List<Size> select (List<Size> source) {
                 Log.d("SizeSelectorPreview", source+"");
 
                 List<Size> lll = new ArrayList<Size>();
-                lll.add(source.get(1));
+                lll.add(source.get(4));
 
                 serverResolution = new Size(mCamera.getPictureSize().getHeight(),mCamera.getPictureSize().getWidth());
-                clientResolution = source.get(1);
+                clientResolution = new Size(mCamera.getPictureSize().getWidth(), mCamera.getPictureSize().getHeight());
 
-                Log.d("SizeSelector", serverResolution+"serverResolution");
-                Log.d("SizeSelector", clientResolution+"clientResolution");
+                Log.d("SizeSelector", serverResolution + "serverResolution");
+                Log.d("SizeSelector", clientResolution + "clientResolution");
 
                 return lll;
             }
@@ -253,10 +262,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         overlay = findViewById(R.id.overlay);
+        Log.d("overlay", overlay.getHeight() +","+overlay.getWidth());
         autofritz = findViewById(R.id.autofritz);
         holes_check_initialize();
-
-
 
         final FrameLayout layout = (FrameLayout) findViewById(R.id.preview_framelayout);
         final ViewTreeObserver observer= layout.getViewTreeObserver();
@@ -478,26 +486,6 @@ public class MainActivity extends AppCompatActivity {
         if (input_bmp != null) temp = input_bmp;
         else temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
 
-        //check first postive and negative connection
-//        int countPosNeg = 0;
-//        if(currentComponents != null && currentComponents.size() >= 2) {
-//            for (Electronics electronic : currentComponents) {
-//                String name = electronic.name.substring(0, electronic.name.length() - 2);
-//                if (name.equals("wire")) {
-//                    Point pin1 = electronic.pins.get(0);
-//                    Point pin2 = electronic.pins.get(1);
-//                    if ((pin1.x == 1 && pin2.x == 13) || (pin1.x == 0 && pin2.x == 12))
-//                        countPosNeg++;
-//                }
-//            }
-//        }
-//        if(countPosNeg < 2 && updates <3){
-//            Log.d("updateOverlay", "countPosNeg");
-//            temp = style_PosNeg(temp, null);
-//        }
-
-//        temp = drawResistorValue(temp);
-//        temp = VisualizeCompoPins(temp);
         overlay.setImageBitmap(temp);
         Log.d("updates", updates+ "");
         return temp;
@@ -555,13 +543,15 @@ public class MainActivity extends AppCompatActivity {
             white.setStrokeWidth(10);
 
             Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
-            red.setColor(getResources().getColor(R.color.opred));
+//            red.setColor(getResources().getColor(R.color.opred));
+            red.setColor(Color.RED);
             red.setStrokeWidth(10);
             red.setTextSize(40);
             red.setFakeBoldText(true);
 
             Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
-            black.setColor(getResources().getColor(R.color.opblack));
+//            black.setColor(getResources().getColor(R.color.opblack));
+            black.setColor(Color.BLACK);
             black.setStrokeWidth(10);
             black.setTextSize(40);
             black.setFakeBoldText(true);
@@ -655,13 +645,17 @@ public class MainActivity extends AppCompatActivity {
                 Point pin2 = getOtherPoint(electronic.pins.get(1));
                 Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
 
+                int gap = 0;
+                if (electronic.pins.get(1).x >=2 && electronic.pins.get(1).x <= 6) gap = 45;
+                else gap = -45;
+
                 //autofritz the resistor to the 5V
                 canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, red);
                 //draw the line connects to the ground
                 canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, black);
                 //draw the point for digitalRead
                 canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
-                canvas.drawText("analogRead", (float) hole2.x - 100, (float) hole2.y + 30, yellow);
+                canvas.drawText("analogRead", (float) hole2.x - 100, (float) hole2.y + gap, yellow);
             } else if (name.equals("LCD")) {
                 String datasheet[] = {"GROUND", "POWER", "analog", "RS", "GROUND", "EN", "", "", "", "", "d4", "d5", "d6", "d7", "POWER", "GROUND"};
                 int tmp = 0;
@@ -896,11 +890,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private Bitmap VisualizeHoles(Bitmap input_bmp){
         visualizeAllPosition();
-        Log.d("VisualizeHoles", "visualizing");
         Bitmap temp_bmp;
         if (input_bmp != null) temp_bmp = input_bmp;
         else temp_bmp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
-
 
         if(isholesVisualize) {
             Log.d("VisualizeHoles", "visualizing1234");
@@ -975,8 +967,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private Point ServerToClient(Point point){
         if (serverResolution != null && clientResolution != null){
-            int serverWidth = 3264;
-            int serverHeight = 2448;
+            int serverWidth = 1280;
+            int serverHeight = 960;
             int clientWidth = 1280;
             int clientHeight = 960;
 
@@ -985,18 +977,6 @@ public class MainActivity extends AppCompatActivity {
         }else return new Point(0,0);
 
     }
-    private Point ClientToServer(Point point){
-        if (serverResolution != null && clientResolution != null){
-            int serverWidth = serverResolution.getWidth();
-            int serverHeight = serverResolution.getHeight();
-            int clientWidth = clientResolution.getWidth();
-            int clientHeight = clientResolution.getHeight();
-            Point temp = new Point(point.x/clientWidth * serverWidth, point.y/clientHeight * serverHeight);
-            return temp;
-        }else return new Point(0,0);
-    }
-
-
     private class Electronics {
         String name;
         List<Point> boxes;
@@ -1010,7 +990,11 @@ public class MainActivity extends AppCompatActivity {
             this.boxes = boxes;
             this.pins = pins;
 
-            if(button != null) {
+            String nametmp = name.substring(0,name.length()-2);
+
+            if(button != null && (nametmp.equals("IC") || nametmp.equals("potentiometer") || nametmp.equals("trimpot") ||
+                    nametmp.equals("motor") || nametmp.equals("button"))) {
+
                 final String name_tmp = this.name;
                 FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
                 button.setTag(name);
@@ -1062,8 +1046,7 @@ public class MainActivity extends AppCompatActivity {
                             "2. 注意digital read的pin"));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "LED radiates when button is pressed." + "<br />" +
-                            "<h1>" + "Press to watch video. </h1>"));
+                            "<br />" + "LED radiates when button is pressed." + "<br />"));
 
             ambient_top_button.setText("一邊接到Power，一邊接電阻到地，Arduino 接與地相連的Pin。");
             ambient_bot_button.setText("利用產生的程式碼來確保button可以正常運作後才進下一步。");
@@ -1162,23 +1145,23 @@ public class MainActivity extends AppCompatActivity {
 
         else if (name.equals("potentiometer")){
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "Potentiometer </h1>" +
+                    "<h1>" + "可變電阻 </h1>" +
                             "<b> I/O Type: </b> Input" + "<br />" +
                             "<b>" + "Pin Type:</b> Analog"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 5V and GND can be interchanged."  + "<br />" +
-                            "2. Remember to connect Vout to analog pin."));
+                            "1. 記得利用analog pin來讀取值\n"  + "<br />" +
+                            "2. 正負可以相反"));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "LED radiates when button is pressed."));
+                            "<br />" + "可以利用trimpot調整LED亮度."));
 
-            ambient_top_button.setText("Left pin to power, Right pin to ground and middle pin to analog pin of arduino.");
-            ambient_bot_button.setText("Ensure the value changing from 0-1023 when being rotated.");
+            ambient_top_button.setText("注意可變電阻在麵包版上的空間分配.");
+            ambient_bot_button.setText("利用自動生成的程式碼，確保轉動時，analog值會改變.");
 
-            top_image.setImageResource(R.drawable.transistor_top);
-            mid_image.setImageResource(R.drawable.transistor_mid);
-            bot_image.setImageResource(R.drawable.transistor_video);
+            top_image.setImageResource(R.drawable.potentiometer_top);
+            mid_image.setImageResource(R.drawable.potentiometer_mid);
+            bot_image.setImageResource(R.drawable.potentiometer_video);
         }
 
         else if (name.equals("LCD")){
@@ -1219,8 +1202,6 @@ public class MainActivity extends AppCompatActivity {
 
     private class SendToServer extends AsyncTask<MyTaskParams,Integer,String> {
         Socket socket;
-//        String SERVERIP = "104.196.101.18";
-//        String SERVERIP = "172.20.10.2";
         String getCommand;
         int PORT = 8000;
         PrintWriter printWriter;
@@ -1282,67 +1263,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String fromserver){
             super.onPostExecute(fromserver);
-            parseComponentsFromServer(fromserver);
+            try {
+                parseComponentsFromServer(fromserver);
+            }catch (Exception e){}
         }
-    }
-
-    int cameraLeft = 178;
-    int cameraRight = 642;
-    int cameraTop = -6;
-    int cameraBot = 340;
-
-    int frameWidth = 1920;
-    int frameHeight = 1440;
-    int displayWidth = 829;
-    int displayHeight = 377;
-
-    private Point cameraToscreen(Point input){
-
-        Point result = new Point(cameraLeft + (int) (input.x/frameWidth * (cameraRight - cameraLeft)),
-                cameraTop + (int)(input.y/frameHeight * (cameraBot - cameraTop)));
-
-        if (result.x <= 0)result.x = 0;
-        if (result.x >= displayWidth)result.x = displayWidth;
-        if (result.y <= 0)result.y = 0;
-        if (result.y >= displayHeight)result.y = displayHeight;
-
-        Log.d("touchafterTransform", Double.toString(result.x) + " " + Double.toString(result.y));
-
-        return result;
-    }
-
-    private Point screenTocamera(Point input){
-        Point result = new Point();
-
-        if (input.x <= cameraLeft)input.x = cameraLeft;
-        if (input.x >= cameraRight)input.x = cameraRight;
-        if (input.y <= cameraTop)input.y = cameraTop;
-        if (input.y >= cameraBot)input.y = cameraBot;
-
-        result.x = (input.x - cameraLeft)/(cameraRight - cameraLeft) * frameWidth;
-        result.y = (input.y - cameraTop)/(cameraBot - cameraTop) * frameHeight;
-
-        if (result.x <= 0)result.x = 0;
-        if (result.x >= frameWidth)result.x = frameWidth;
-        if (result.y <= 0)result.y = 0;
-        if (result.y >= frameHeight)result.y = frameHeight;
-
-        Log.d("touchafterTransform", Double.toString(result.x) + " " + Double.toString(result.y));
-
-        return result;
     }
 
     private Point bitmapToFrameLayout(Point input){
         Log.d("trans", input.toString());
         if (preview_frame_height != 0 && preview_frame_width != 0){
-//            int serverWidth = serverResolution.getWidth();
-//            int serverHeight = serverResolution.getHeight();
-            int serverWidth = 3264;
-            int serverHeight = 2448;
+            int serverWidth = 1280;
+            int serverHeight = 960;
             Log.d("transWidth", serverWidth+"");
             Log.d("transHeight", serverHeight+"");
-            int clientWidth = clientResolution.getWidth();
-            int clientHeight = clientResolution.getHeight();
             Point temp = new Point(input.x * preview_frame_width/serverWidth, input.y * preview_frame_height/serverHeight);
             return temp;
         }else return new Point(0,0);
@@ -1417,9 +1350,8 @@ public class MainActivity extends AppCompatActivity {
                         temp.setVisibility(View.INVISIBLE);
                         snapHandler.post(snap_repeat);
 
-                        VisualizeHoles(style_PosNeg(null,null));
+                        VisualizeHoles(null);
                     }
-                    Log.d("calibration", "successful" + Integer.toString(count_temp));
                     return;
                 }
             }
