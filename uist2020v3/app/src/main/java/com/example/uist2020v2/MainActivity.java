@@ -67,6 +67,7 @@ import com.otaliastudios.cameraview.overlay.OverlayLayout;
 import com.otaliastudios.cameraview.size.Size;
 import com.otaliastudios.cameraview.size.SizeSelector;
 
+import org.json.JSONObject;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.aruco.Dictionary;
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView bot_image;
     private Button ambient_top_button;
     private Button ambient_bot_button;
+    JSONObject qaJson = null;
 
 
     @Override
@@ -345,6 +347,17 @@ public class MainActivity extends AppCompatActivity {
                 mVideoView.start();
             }
         });
+
+        Button qaButton = findViewById(R.id.QAbutton);
+        qaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final QADialog dialog = new QADialog(MainActivity.this);// add here your class name
+
+                dialog.show();
+            }
+        });
+
 
         top_text.setText("Component Details");
         mid_text.setText("Some tips will be here");
@@ -1078,6 +1091,29 @@ public class MainActivity extends AppCompatActivity {
             bot_image.setImageResource(R.drawable.trimpot_video);
 
         }
+
+        else if (name.equals("photocell")) {
+            top_text.setText(Html.fromHtml(
+                    "<h1>" + "Photocell </h1>" +
+                            "<b> I/O Type: </b> Input" + "<br />" +
+                            "<b>" + "Pin Type:</b> Analog"));
+            mid_text.setText(Html.fromHtml(
+                    "<b>" + "Tips:" + "</b>" + "<br />" +
+                            "1. 記得接上電阻\n"));
+            bot_text.setText(Html.fromHtml(
+                    "<b>" + "Example video:" + "</b>" +
+                            "<br />" + "可以利用trimpot調整LED亮度." + "<br />"));
+
+            ambient_top_button.setText("注意trimpot在麵包版上的空間分配.");
+            ambient_bot_button.setText("利用自動生成的程式碼，確保轉動時，analog值會改變.");
+
+            top_image.setImageResource(R.drawable.trimpot_top);
+            mid_image.setImageResource(R.drawable.trimpot_mid);
+            bot_image.setImageResource(R.drawable.trimpot_video);
+
+        }
+
+
 
         else if (name.equals("transistor")){
             top_text.setText(Html.fromHtml(

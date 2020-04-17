@@ -1,0 +1,238 @@
+{"questions": [
+  {
+    "question": "Which component doesn't work?",
+    "question_type": "single_select",
+    "options": [
+      "Button doesn't work",
+      "Motor doesn't work",
+      "IC doesn't work",
+      "I don't know"
+    ],
+    "questions": [
+      {
+        "question": "What is connected to the left leg of the button?",
+        "question_type": "single_select",
+        "options": [
+          "Power",
+          "Ground",
+          "Resistor"
+        ],
+        "questions": [
+          {
+            "question": "What is connected to the right leg of the button?",
+            "question_type": "single_select",
+            "options": [
+              "Ground",
+              "Resistor"
+            ],
+            "questions": [
+              {
+                "question": "It's wrong. You should connect a resistor between button and ground",
+                "question_type": "answer"
+              },{
+                "question": "Is the resistor then connected to the ground?",
+                "question_type": "single_select",
+                "options": [
+                  "Yes",
+                  "No"
+                ],
+                "questions": [
+                  {
+                    "question": "The circuit seems alright. Did you wire an Arduino Digital Pin to the right leg of the button?",
+                    "question_type": "single_select",
+                    "options": [
+                      "Yes",
+                      "No"
+                    ],
+                    "questions": [
+                      {
+                        "question": " I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+                        "question_type": "answer"
+                      },{
+                        "question": "You should wire an Arduino Digital Pin (not 0 or 1) to the right leg of the button",
+                        "question_type": "answer"
+                      }
+                    ]
+                  },{
+                    "question": "The resistor should be connected between button and ground",
+                    "question_type": "answer"
+                  }
+                ]
+              }
+            ]
+          },{
+            "question": "What is connected to the right leg of the button?",
+            "question_type": "single_select",
+            "options": [
+              "Power",
+              "Resistor"
+            ],
+            "questions": [
+              {
+                "question": "It's wrong. You should connect a resistor between button and power",
+                "question_type": "answer"
+              },{
+                "question": "Is the resistor then connected to the power?",
+                "question_type": "single_select",
+                "options": [
+                  "Yes",
+                  "No"
+                ],
+                "questions": [
+                  {
+                    "question": "The circuit seems alright. Did you wire an Arduino Digital Pin to the right leg of the button?",
+                    "question_type": "single_select",
+                    "options": [
+                      "Yes",
+                      "No"
+                    ],
+                    "questions": [
+                      {
+                        "question": "I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+                        "question_type": "answer"
+                      },{
+                        "question": "You should wire an Arduino Digital Pin (not 0 or 1) to the right leg of the button",
+                        "question_type": "answer"
+                      }
+                    ]
+                  },{
+                    "question": "The resistor should be connected between button and power",
+                    "question_type": "answer"
+                  }
+                ]
+              }
+            ]
+          }, {
+            "question": "What is connected to the right leg of the button?",
+            "question_type": "single_select",
+            "options": [
+              "Power",
+              "Ground"
+            ],
+            "questions": [
+              {
+                "question": "Please check if the resistor connected to the ground?",
+                "question_type": "single_select",
+                "options": [
+                  "Yes",
+                  "No"
+                ],
+                "questions": [
+                  {
+                    "question": "The circuit seems alright. Did you wire an Arduino Digital Pin to the left leg of the button?",
+                    "question_type": "single_select",
+                    "options": [
+                      "Yes",
+                      "No"
+                    ],
+                    "questions": [
+                      {
+                        "question": "I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+                        "question_type": "answer"
+                      },{
+                        "question": "You should wire an Arduino Digital Pin (not 0 or 1) to the left leg of the button",
+                        "question_type": "answer"
+                      }
+                    ]
+                  },{
+                    "question": "The resistor should be connected between button and ground",
+                    "question_type": "answer"
+                  }
+                ]
+              },{
+                "question": "Please check if the resistor connected to the power?",
+                "question_type": "single_select",
+                "options": [
+                  "Yes",
+                  "No"
+                ],
+                "questions": [
+                  {
+                    "question": "The circuit seems alright. Did you wire an Arduino Digital Pin to the left leg of the button?",
+                    "question_type": "single_select",
+                    "options": [
+                      "Yes",
+                      "No"
+                    ],
+                    "questions": [
+                      {
+                        "question": "I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+                        "question_type": "answer"
+                      },{
+                        "question": "You should wire an Arduino Digital Pin (not 0 or 1) to the left leg of the button",
+                        "question_type": "answer"
+                      }
+                    ]
+                  },{
+                    "question": "The resistor should be connected between button and power",
+                    "question_type": "answer"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }, {
+        "question": "Is the motor always rotating?",
+        "question_type": "single_select",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "questions": [
+          {
+            "question": "I think the bug is not caused by the motor but the IC. Please check if the IC is connected well.",
+            "question_type": "answer"
+          },{
+            "question": "Please check if the motor is functional. (Connect the motor to the power and ground)",
+            "question_type": "answer"
+          }
+        ]
+      }, {
+        "question": "Which pin of IC is connected to the motor?",
+        "question_type": "single_select",
+        "options": [
+          "Motor Terminal",
+          "Motor Logic Pin",
+          "EN",
+          "Motor Power Supply"
+        ],
+        "questions": [
+          {
+            "question": "Which pin of IC is connected to the Arduino's pin?",
+            "question_type": "single_select",
+            "options": [
+              "Motor Logic Pin",
+              "EN",
+              "Motor Power Supply"
+            ],
+            "questions": [
+              {
+                "question": "Motor Logic Pin is to control the motor rotating right or left",
+                "question_type": "answer"
+              }, {
+                "question": "The IC seems right. I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+                "question_type": "answer"
+              },{
+                "question": "Motor Power Supply means the power supply used to drive the Motor (e.g. 5V)",
+                "question_type": "answer"
+              }
+            ]
+          },{
+            "question": "Motor Logic Pin is to control the motor rotating right or left",
+            "question_type": "answer"
+          }, {
+            "question": "EN is to control the motor speed",
+            "question_type": "answer"
+          },{
+            "question": "Motor Power Supply means the power supply used to drive the Motor (e.g. 5V)",
+            "question_type": "answer"
+          }
+        ]
+      },  {
+        "question": "I already sent the question to the real TA. In the meantime, please check again if the power and ground is well connected to Arduino.",
+        "question_type": "answer"
+      }
+    ]
+  }
+]}
