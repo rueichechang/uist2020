@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
         Canvas canvas = new Canvas(temp);
 
         String datasheet_up [] = {"POWER 5V", "4A", "4Y", "GROUND", "GROUND", "3Y", "3A","3,4EN"};
-        String datasheet_down [] = {"1,2EN", "1A", "1Y", "GROUND", "GROUND", "2Y", "2A", "Motor Power"};
+        String datasheet_down [] = {"1,2EN", "1A", "1Y", "GROUND", "GROUND", "2Y", "2A", "MOTOR POWER 5V"};
         Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
         blue.setColor(Color.BLUE);
         blue.setTextSize(30);
@@ -586,8 +586,8 @@ public class MainActivity extends AppCompatActivity {
             String name = electronic.name.substring(0, electronic.name.length() - 2);
 
             if (name.equals("IC")) {
-                String datasheet_up[] = {"POWER 5V", "4A", "4Y", "GROUND", "GROUND", "3Y", "3A", "3,4EN"};
-                String datasheet_down[] = {"1,2EN", "1A", "1Y", "GROUND", "GROUND", "2Y", "2A", "Motor Power"};
+                String datasheet_up[] = {"IC POWER 5V", "", "", "", "", "", "", ""};
+                String datasheet_down[] = {"Enable", "Digital", "Motor", "GND", "GND", "Motor", "Digital", "Motor Power 5V"};
 
                 float x_start = 50;
                 float y_start = 100;
@@ -605,13 +605,14 @@ public class MainActivity extends AppCompatActivity {
 
                     canvas.drawText(datasheet_up[i], x_start, y_start, blue);
                     float temp1 = blue.measureText(datasheet_up[i]);
-                    canvas.drawLine((float) hole_up.x + 10, (float) hole_up.y, x_start + temp1 / 2, y_start + 20, blue);
-                    x_start += temp1 + 50;
+                    if(!datasheet_up[i].equals(""))
+                        canvas.drawLine((float) hole_up.x + 10, (float) hole_up.y, x_start + temp1 / 2, y_start + 20, blue);
+                    x_start += temp1 + 40;
 
                     canvas.drawText(datasheet_down[i], x_start2, y_start2, red);
                     float temp2 = red.measureText(datasheet_down[i]);
                     canvas.drawLine((float) hole_down.x + 10, (float) hole_down.y, x_start2 + temp2 / 2, y_start2 - 50, red);
-                    x_start2 += temp2 + 50;
+                    x_start2 += temp2 + 40;
                 }
 
             } else if (name.equals("button")) {
@@ -1092,29 +1093,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        else if (name.equals("photocell")) {
-            top_text.setText(Html.fromHtml(
-                    "<h1>" + "Photocell </h1>" +
-                            "<b> I/O Type: </b> Input" + "<br />" +
-                            "<b>" + "Pin Type:</b> Analog"));
-            mid_text.setText(Html.fromHtml(
-                    "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 記得接上電阻\n"));
-            bot_text.setText(Html.fromHtml(
-                    "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "可以利用trimpot調整LED亮度." + "<br />"));
-
-            ambient_top_button.setText("注意trimpot在麵包版上的空間分配.");
-            ambient_bot_button.setText("利用自動生成的程式碼，確保轉動時，analog值會改變.");
-
-            top_image.setImageResource(R.drawable.trimpot_top);
-            mid_image.setImageResource(R.drawable.trimpot_mid);
-            bot_image.setImageResource(R.drawable.trimpot_video);
-
-        }
-
-
-
         else if (name.equals("transistor")){
             top_text.setText(Html.fromHtml(
                     "<h1>" + "Transistor </h1>" +
@@ -1140,18 +1118,19 @@ public class MainActivity extends AppCompatActivity {
         else if (name.equals("IC")){
             top_text.setText(Html.fromHtml(
                     "<h1>" + "IC (L293D) </h1>" +
-                            "<b> I/O Type: </b> datasheet" + "<br />" +
-                            "<b>" + "Pin Type:</b> datasheet"));
+                            "<b> 記得IC頭上的半圓形朝左邊。 </b>  <br />" +
+                            "<b> 利用Arduino控制1A/2A。</b>  <br />" +
+                            "<b> 1Y and 2Y 接上馬達。 </b> "));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. EN/1A/2A can be written high and low."  + "<br />" +
+                            "1. 控制EN大小來調整轉速"  + "<br />" +
                             "2. 1Y and 2Y connect to motor’s two legs."));
             bot_text.setText(Html.fromHtml(
                     "<b>" + "Speed:" + "</b>" +
-                            "<br />" + "You can use analogWrite on EN to adjust speed. "));
+                            "<br />" + "你可以對EN pin寫analogWrite。"));
 
-            ambient_top_button.setText("Follow the overlays. Red to Power, Black to Ground and Yellow to Arduino.");
-            ambient_bot_button.setText("Ensure motor can be programmatically changed direction before moving on.");
+            ambient_top_button.setText("記得8和18都要接上電壓(5V)。");
+            ambient_bot_button.setText("確定能利用Aruidno與IC控制馬達方向與轉速，才進下一步");
 
             top_image.setImageResource(R.drawable.chip_top);
             mid_image.setImageResource(R.drawable.chip_mid);
@@ -1385,7 +1364,30 @@ public class MainActivity extends AppCompatActivity {
                         temp.setVisibility(View.INVISIBLE);
                         snapHandler.post(snap_repeat);
 
-                        VisualizeHoles(null);
+                        top_text.setText(Html.fromHtml(
+                                "<h1>" + "Circuit Style </h1>" +
+                                        "<b> 1. </b>IC的半圓形朝左邊。 <br />" +
+                                        "<b> 2. </b>確認電阻值不要過大。 <br />" +
+                                        "<b> 3. </b>把已知要用的元件插上去。<br /> "));
+                        mid_text.setText(Html.fromHtml(
+                                "<b>" + "" + "</b>" + "<br />" +
+                                        "<b> 4. </b>電線不要跨過IC。 <br />" +
+                                        "<b> 5. </b>電線要平貼麵包版。 <br />" +
+                                        "<b> 6. </b>確認每個元件可以動才進下一步。 <br />"));
+                        bot_text.setText(Html.fromHtml(
+                                "<b>" + "" + "</b>  <br />" +
+                                        "<b> 7. </b>規劃好麵包版空間。 <br />" +
+                                        "<b> 8. </b>紅線接power，黑線接Ground。 <br />" +
+                                        "<b> 9. </b>盡量避免電線交叉。 <br />" ));
+
+                        ambient_top_button.setText("!!!!!!!!!!!!! 線 記得 要 貼平 板子!!!!!!!!!!!!");
+                        ambient_bot_button.setText("確定單個元件的arduino邏輯正確才進下一步");
+
+                        top_image.setImageResource(R.drawable.style_top);
+                        mid_image.setImageResource(R.drawable.style_mid);
+                        bot_image.setImageResource(R.drawable.style_bot);
+
+                        VisualizeHoles(style_PosNeg(null, null));
                     }
                     return;
                 }
@@ -1440,6 +1442,18 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(input.substring(0,5).equals("movcp")){
                 String[] name_points = input.substring(5).split(":");
+
+                int count =0;
+                if(currentComponents.size()>=1)
+                    for (Electronics electronic : currentComponents)
+                        if (!electronic.name.equals(name_points[0]))
+                            count+=1;
+
+                if (count == currentComponents.size() || currentComponents.size() ==0){
+                    parseComponentsFromServer("newcp" + input.substring(5));
+                    return;
+                }
+
                 String[] points_pins = name_points[1].split("@");
                 final String[] pins = points_pins[1].split(",");
                 String[] points = points_pins[0].split(",");
@@ -1511,15 +1525,26 @@ public class MainActivity extends AppCompatActivity {
             else if(input.substring(0,5).equals("oldcp")){
                 try {
                     String name = input.substring(5).split(":")[0];
+
+                    int count =0;
+                    if(currentComponents.size()>=1)
+                        for (Electronics electronic : currentComponents)
+                            if (!electronic.name.equals(name))
+                                count+=1;
+                    if (count == currentComponents.size() || currentComponents.size() ==0){
+                        parseComponentsFromServer("newcp" + input.substring(5));
+                        return;
+                    }
+
                     int i = 0;
                     for (Electronics electronic : currentComponents) {
                         if (electronic.name.equals(name)) {
                             currentComponents.remove(i);
                             autofritz.setImageBitmap(null);
                             overlay.setImageBitmap(null);
-                            ViewGroup layout = (ViewGroup) electronic.button.getParent();
-                            if(null!=layout) //for safety only  as you are doing onClick
-                                layout.removeView(electronic.button);
+//                            ViewGroup layout = (ViewGroup) electronic.button.getParent();
+//                            if(null!=layout) //for safety only  as you are doing onClick
+//                                layout.removeView(electronic.button);
                         }
                         i += 1;
                     }
@@ -1530,6 +1555,7 @@ public class MainActivity extends AppCompatActivity {
             else return;
         }else return;
     }
+
 
     private int dp(int input){
         Resources r = getResources();
