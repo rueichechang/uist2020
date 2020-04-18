@@ -22,6 +22,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.YuvImage;
 import android.media.Image;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -369,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
         top_image.setImageBitmap(null);
         mid_image.setImageBitmap(null);
         bot_image.setImageBitmap(null);
+
     }
 
     private Bitmap style_PosNeg(Bitmap input_bmp, Electronics none){
@@ -1424,11 +1427,13 @@ public class MainActivity extends AppCompatActivity {
                     String name = tagName.substring(0,tagName.length()-2);
                     int resistor_value = 0;
                     try {
-                        if (name.equals("resistor") && name_points.length == 3)
+                        if (name.equals("resistor") && name_points.length == 3) {
+
                             if (!name_points[2].equals("None")) {
                                 resistor_value = Integer.parseInt(name_points[2]);
                                 electronic.resistor_value = resistor_value;
                             }
+                        }
                     }catch(Exception e){}
 
                     currentComponents.add(electronic);
@@ -1439,6 +1444,15 @@ public class MainActivity extends AppCompatActivity {
                     updateall(tagName);
                     updates++;
                 }
+
+                try {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
             }
             else if(input.substring(0,5).equals("movcp")){
                 String[] name_points = input.substring(5).split(":");
