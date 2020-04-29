@@ -10,176 +10,202 @@
     >
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="280dp"
-            android:orientation="vertical"
-            android:weightSum="3"
-            android:padding="10px">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="45645646545646545456456465456465454564564654"
-                    android:textColor="@color/black"
-                    android:id="@+id/top"
-                    android:textSize="10dp"/>
-
-                <ImageView
-                    android:id="@+id/top_pic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:src="@drawable/button_top">
-                </ImageView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="45645646545646545456456465456465454564564654"
-                    android:textColor="@color/black"
-                    android:id="@+id/middle"
-                    android:textSize="10dp"/>
-
-                <ImageView
-                    android:id="@+id/mid_pic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:src="@drawable/button_mid">
-                </ImageView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="45645646545646545456456465456465454564564654"
-                    android:textColor="@color/black"
-                    android:id="@+id/bottom"
-                    android:textSize="10dp"/>
-
-                <ImageView
-                    android:id="@+id/bot_pic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:src="@drawable/button_video">
-                </ImageView>
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/preview_framelayout">
-
-            <Button
-                android:id="@+id/QAbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="400px"
-                android:text="Virtual TA"
-                android:background="@color/blue" />
-
-            <com.otaliastudios.cameraview.CameraView
-                android:id="@+id/camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:keepScreenOn="true">
-                <ImageView
-                    android:id="@+id/overlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom|end"
-                    app:layout_drawOnPictureSnapshot="false"
-                    app:layout_drawOnPreview="true"
-                    app:layout_drawOnVideoSnapshot="false" />
-                />
-
-                <ImageView
-                    android:id="@+id/autofritz"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom|end"
-                    app:layout_drawOnPictureSnapshot="false"
-                    app:layout_drawOnPreview="true"
-                    app:layout_drawOnVideoSnapshot="false" />
-                />
-
-
-            </com.otaliastudios.cameraview.CameraView>
-        </FrameLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:id="@+id/relativeLayout2">
 
         <Button
             android:id="@+id/ambient_top_text"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_gravity="right"
+            android:layout_marginBottom="0dp"
             android:background="@drawable/mybutton"
             android:text="ambient tips1"
+            android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="15dp"
-            android:textAllCaps="false">
-        </Button>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ambient_bot_text"></Button>
 
         <Button
             android:id="@+id/ambient_bot_text"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
             android:background="@drawable/mybutton"
             android:text="ambient tips2"
+            android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="15dp"
-            android:textAllCaps="false">
-        </Button>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"></Button>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/ambient_top_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="310dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/componentTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#DAD3D3"
+                    android:text="Component"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/top"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="45645646545646545456456465456465454564564654"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:id="@+id/top_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:src="@drawable/button_top"></ImageView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="45645646545646545456456465456465454564564654"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:id="@+id/mid_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:src="@drawable/button_mid"></ImageView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="45645646545646545456456465456465454564564654"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:id="@+id/bot_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:src="@drawable/button_video"></ImageView>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/preview_framelayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/QAbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:background="@color/blue"
+                    android:text="Virtual TA" />
+
+                <com.otaliastudios.cameraview.CameraView
+                    android:id="@+id/camera"
+                    android:layout_width="560dp"
+                    android:layout_height="420dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_gravity="center"
+                    android:keepScreenOn="true">
+
+                    <ImageView
+                        android:id="@+id/overlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom|end"
+                        app:layout_drawOnPictureSnapshot="false"
+                        app:layout_drawOnPreview="true"
+                        app:layout_drawOnVideoSnapshot="false" />
+                    />
+
+                    <ImageView
+                        android:id="@+id/autofritz"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom|end"
+                        app:layout_drawOnPictureSnapshot="false"
+                        app:layout_drawOnPreview="true"
+                        app:layout_drawOnVideoSnapshot="false" />
+                    />
+
+
+                </com.otaliastudios.cameraview.CameraView>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/calibration"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/calibration"
-        android:text="TOUCH"
         android:background="@color/darkred"
-        android:textSize="50dp">
-    </Button>
+        android:text="TOUCH"
+        android:textSize="50dp"
+        android:visibility="visible"></Button>
 
 
 </FrameLayout>

@@ -1,27 +1,18 @@
 package com.example.uist2020v2;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.YuvImage;
-import android.media.Image;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -30,26 +21,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.DragEvent;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,15 +38,8 @@ import android.widget.VideoView;
 
 import com.otaliastudios.cameraview.BitmapCallback;
 import com.otaliastudios.cameraview.CameraListener;
-import com.otaliastudios.cameraview.CameraOptions;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.PictureResult;
-import com.otaliastudios.cameraview.VideoResult;
-import com.otaliastudios.cameraview.controls.Mode;
-import com.otaliastudios.cameraview.controls.Preview;
-import com.otaliastudios.cameraview.frame.Frame;
-import com.otaliastudios.cameraview.frame.FrameProcessor;
-import com.otaliastudios.cameraview.overlay.OverlayLayout;
 import com.otaliastudios.cameraview.size.Size;
 import com.otaliastudios.cameraview.size.SizeSelector;
 
@@ -75,10 +49,7 @@ import org.opencv.android.Utils;
 import org.opencv.aruco.Dictionary;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.aruco.Aruco;
 
@@ -90,10 +61,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class MainActivity extends AppCompatActivity {
     private CameraView mCamera;
@@ -103,8 +71,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView overlay;
     private ImageView autofritz;
     private String app_num = "06";
-    private String SERVERIP = "104.196.101.18";
-//    String SERVERIP = "192.168.1.169";
+//    private String SERVERIP = "104.196.101.18";
+    String SERVERIP = "192.168.42.3";
+    private String testInputForCal = "calib270-196,290-195,311-195,331-195,352-195,394-194,415-194,435-193,456-193,477-193,518-192,540-192,560-191,581-191,602-191,644-191,665-190,686-189,707-189,728-189,772-188,793-187,814-187,835-186,857-186,270-216,290-216,311-216,332-216,352-216,394-215,415-215,435-215,456-214,477-214,519-213,540-213,560-213,581-213,602-212,645-211,666-211,686-211,708-210,729-210,772-209,793-208,814-208,836-208,857-207,262-276,282-276,302-276,323-275,343-275,364-275,385-274,406-274,426-274,447-274,468-274,488-273,509-273,530-273,551-273,571-272,592-272,613-272,634-271,655-271,676-271,697-271,718-270,740-270,761-269,782-269,803-269,825-268,846-268,868-268,262-297,282-296,302-296,323-296,343-296,364-296,385-295,406-295,426-295,447-294,468-294,489-294,509-294,530-294,551-293,572-293,592-293,613-293,634-292,655-292,676-292,697-291,718-291,740-291,761-290,782-290,804-290,825-289,847-289,868-288,261-318,282-317,302-317,323-317,344-316,364-316,385-316,406-316,426-316,447-315,468-315,489-315,509-315,530-315,551-314,572-314,593-314,613-314,635-313,655-313,677-313,697-313,719-312,740-312,761-312,782-311,804-311,825-311,847-310,868-310,261-338,282-338,303-338,323-337,344-337,364-337,385-337,406-337,426-337,447-337,468-336,489-336,509-336,530-336,551-335,572-335,593-335,614-335,635-334,656-334,676-334,698-333,719-333,740-333,761-333,783-333,804-332,825-332,847-331,868-331,261-359,282-359,303-358,324-359,343-358,364-358,385-358,407-358,426-358,447-357,468-357,489-357,509-357,530-357,551-356,572-356,593-356,614-356,635-356,656-356,677-355,698-355,719-354,740-354,761-354,783-354,804-354,825-353,847-353,868-353,261-419,281-418,302-418,324-418,343-418,364-418,385-418,405-417,427-417,447-417,468-417,489-417,509-417,530-417,551-416,574-416,593-416,614-416,635-415,656-415,677-415,698-415,719-415,740-415,762-414,783-414,804-414,826-414,847-414,869-414,260-440,281-439,302-439,323-439,344-439,364-439,385-438,406-438,427-438,447-438,468-437,489-437,509-437,530-437,551-437,574-437,593-437,614-437,635-437,656-436,677-436,698-436,719-436,741-436,762-436,783-436,805-435,827-435,847-435,869-435,260-461,281-460,302-460,323-460,344-459,364-459,385-459,405-459,427-459,447-459,468-459,489-459,509-458,530-458,551-458,574-458,593-458,614-458,635-458,656-458,677-457,698-457,719-457,741-457,762-457,783-456,805-456,827-457,848-456,869-456,260-482,281-481,302-481,323-481,344-481,364-480,385-480,405-480,427-480,447-480,468-480,489-479,510-479,530-479,551-479,573-479,593-479,614-479,635-478,656-478,677-478,698-478,720-478,741-478,762-478,783-478,805-478,826-478,848-478,869-478,260-502,281-502,302-502,323-502,343-502,365-501,386-501,405-501,427-501,447-501,469-501,490-501,509-500,531-500,551-500,573-500,593-500,614-500,635-500,656-500,677-500,698-500,720-500,741-500,762-499,783-499,805-499,827-499,848-499,870-499,268-564,289-563,309-563,331-563,351-563,394-563,415-563,436-562,456-562,477-562,520-562,541-562,562-561,583-561,604-561,646-561,667-561,689-561,710-561,731-561,774-560,795-560,817-560,838-560,860-560,267-584,288-584,309-584,330-583,351-583,394-583,414-583,435-583,456-583,477-583,519-582,541-582,562-582,583-582,604-582,646-582,667-582,689-582,710-582,731-582,774-582,795-582,817-582,839-582,861-582";
+    private String testInput = "newcptransistor01:359-476,494-526@10-7,10-8,10-9";
 
     private boolean calibrating = false;
     private boolean buildtree = true;
@@ -166,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView bot_image;
     private Button ambient_top_button;
     private Button ambient_bot_button;
+    private TextView componentTitleTextView;
     JSONObject qaJson = null;
 
 
@@ -173,6 +144,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View decorView = getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         mCamera = findViewById(R.id.camera);
         mCamera.setLifecycleOwner(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -193,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         bot_image = findViewById(R.id.bot_pic);
         ambient_top_button = findViewById(R.id.ambient_top_text);
         ambient_bot_button = findViewById(R.id.ambient_bot_text);
-
+        componentTitleTextView = findViewById(R.id.componentTitleTextView);
 
 
         mCamera.addCameraListener(new CameraListener() {
@@ -205,10 +184,12 @@ public class MainActivity extends AppCompatActivity {
                 result.toBitmap(size.getWidth(), size.getHeight(), new BitmapCallback() {
                     @Override
                     public void onBitmapReady(Bitmap bitmap) {
-                        Bitmap bmp = RotateBitmap(bitmap, -90);
+//                        Bitmap bmp = RotateBitmap(bitmap, -90);
+                        Bitmap bmp = RotateBitmap(bitmap, 0);
                         Log.d("checkhands", "size.getWidth():" + size.getWidth());
+                        Log.d("checkhands", "size.getHeight():" + size.getHeight());
                         Log.d("checkhands", "mCamera.getPictureSize().getWidth():" + mCamera.getPictureSize().getWidth());
-
+                        Log.d("checkhands", "mCamera.getPictureSize().getHeight():" + mCamera.getPictureSize().getHeight());
                         if(size.getWidth() == mCamera.getPictureSize().getWidth()) {
                             Log.d("checkhands", "take picture2");
                             MyTaskParams myTaskParams  = new MyTaskParams(bmp, commandToServer,null);
@@ -224,27 +205,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mCamera.setPictureSize(new SizeSelector() {
-            @Override
-            public List<Size> select (List<Size> source) {
-                Log.d("SizeSelectorPic", source+"");
-                List<Size> lll = new ArrayList<Size>();
-                lll.add(source.get(4));
-                return lll;
-            }
-        });
-
         mCamera.setPreviewStreamSize(new SizeSelector() {
             @Override
             public List<Size> select (List<Size> source) {
                 Log.d("SizeSelectorPreview", source+"");
 
                 List<Size> lll = new ArrayList<Size>();
-                lll.add(source.get(4));
+                for (Size size: source) {
+                    if(size.getWidth() == 1280 && size.getHeight() == 960){
+                        lll.add(size);
+                    }
+                }
 
                 serverResolution = new Size(mCamera.getPictureSize().getHeight(),mCamera.getPictureSize().getWidth());
-                clientResolution = new Size(mCamera.getPictureSize().getWidth(), mCamera.getPictureSize().getHeight());
-
+//                clientResolution = new Size(mCamera.getPictureSize().getWidth(), mCamera.getPictureSize().getHeight());
+                clientResolution = serverResolution;
                 Log.d("SizeSelector", serverResolution + "serverResolution");
                 Log.d("SizeSelector", clientResolution + "clientResolution");
 
@@ -252,18 +227,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mCamera.setPictureSize(new SizeSelector() {
+            @Override
+            public List<Size> select (List<Size> source) {
+                Log.d("SizeSelectorPic", source+"");
+                List<Size> lll = new ArrayList<Size>();
+                for (Size size: source) {
+                    if(size.getWidth() == 1280 && size.getHeight() == 960){
+                        lll.add(size);
+                    }
+                }
+                return lll;
+            }
+        });
 
         calibration = (Button)findViewById(R.id.calibration);
         calibration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-//                commandToServer = "ButtonPressed";
+                commandToServer = "ButtonPressed";
                 commandToServer = "calibration__";
                 mCamera.takePicture();
                 calibration.setBackgroundColor(0x80ffc857);
                 calibration.setText("CAPTURING.....");
-                Log.d("calibration", "button pressed");
+//                Log.d("calibration", "button pressed")
+
+
+//                parseComponentsFromServer(testInputForCal);
+//                parseComponentsFromServer(testInput);;
             }
         });
+
+
+
 
         overlay = findViewById(R.id.overlay);
         Log.d("overlay", overlay.getHeight() +","+overlay.getWidth());
@@ -377,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap style_PosNeg(Bitmap input_bmp, Electronics none){
         Bitmap temp;
         if (input_bmp != null) temp = input_bmp;
-        else temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+        else temp = Bitmap.createBitmap(overlay.getWidth(), overlay.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(temp);
         Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
         black.setColor(Color.BLACK);
@@ -393,27 +388,27 @@ public class MainActivity extends AppCompatActivity {
 
         Point pos1 = holes_position[1].get(0);
         Point pos2 = holes_position[13].get(0);
-        String pos_str = "Connect them";
+//        String pos_str = "Connect power first";
 
 
-        Point neg1 = holes_position[0].get(0);
-        Point neg2 = holes_position[12].get(0);
-        String neg_str = "Connect them ";
+        Point neg1 = holes_position[0].get(1);
+        Point neg2 = holes_position[12].get(1);
+//        String neg_str = "Connect ground first ";
 
         float x_start = 10;
-        float pos_len = red.measureText(pos_str);
-        float neg_len = black.measureText(neg_str);
+//        float pos_len = red.measureText(pos_str);
+//        float neg_len = black.measureText(neg_str);
         if (!checkTwoPins(new Point(0,0), new Point(12,0))) {
-            canvas.drawText(pos_str, x_start, 400, red);
-            canvas.drawText("by red wires", x_start, 430, red);
-            canvas.drawLine((float) pos1.x, (float) pos1.y, x_start + pos_len, 400, red);
-            canvas.drawLine((float) pos2.x, (float) pos2.y, x_start + pos_len, 400, red);
+//            canvas.drawText(pos_str, x_start, 400, red);
+//            canvas.drawText("by red wires", x_start, 430, red);
+            canvas.drawLine((float) pos1.x, (float) pos1.y, (float) pos2.x, (float) pos2.y, red);
+//            canvas.drawLine((float) pos2.x, (float) pos2.y, x_start + pos_len, 400, red);
         }
         if (!checkTwoPins(new Point(1,1), new Point(13,1))) {
-            canvas.drawText(neg_str, x_start, 500, black);
-            canvas.drawText("by black wires", x_start, 530, black);
-            canvas.drawLine((float) neg1.x, (float) neg1.y, x_start + neg_len, 500, black);
-            canvas.drawLine((float) neg2.x, (float) neg2.y, x_start + neg_len, 500, black);
+//            canvas.drawText(neg_str, x_start, 500, black);
+//            canvas.drawText("by black wires", x_start, 530, black);
+            canvas.drawLine((float) neg1.x, (float) neg1.y, (float) neg2.x, (float) neg2.y, black);
+//            canvas.drawLine((float) neg2.x, (float) neg2.y, x_start + neg_len, 500, black);
         }
         return temp;
 
@@ -500,9 +495,10 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap updateBasic(Bitmap input_bmp){
         Bitmap temp;
         if (input_bmp != null) temp = input_bmp;
-        else temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+        else temp = Bitmap.createBitmap(overlay.getWidth(), overlay.getHeight(), Bitmap.Config.ARGB_8888);
 
         overlay.setImageBitmap(temp);
+        overlay.setImageAlpha(180);
         Log.d("updates", updates+ "");
         return temp;
     }
@@ -546,10 +542,10 @@ public class MainActivity extends AppCompatActivity {
         Bitmap temp;
         if (input_bmp != null) temp = input_bmp;
         else
-            temp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+            temp = Bitmap.createBitmap(autofritz.getWidth(), autofritz.getHeight(), Bitmap.Config.ARGB_8888);
         try {
             Canvas canvas = new Canvas(temp);
-            Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor);
+            Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor_new);
 
             Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
             white.setColor(Color.WHITE);
@@ -632,17 +628,25 @@ public class MainActivity extends AppCompatActivity {
                 Point pin2 = getOtherPoint(electronic.pins.get(3));
                 Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
 
-                float pic_width = 30;
-                float pic_height = 60;
-                float left = (float) (neg.x + hole1.x) / 2 - pic_width / 2;
-                float top = (float) (neg.y + hole1.y) / 2 - pic_height / 2;
+//                groundHole.x -= 5;
+                neg.y -= 10;
+//                powerHole.x -= 5;
+                pos.y -= 10;
 
-                //autofritz the resistor to the 5V
-                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, white);
-                canvas.drawBitmap(resistor, null, new RectF(left, top, left + pic_width, top + pic_height), new Paint());
+                float left = (float) Math.min(hole1.x, neg.x);
+                float right = (float) Math.max(hole1.x, neg.x) + 10;
+                float top = (float) Math.min(hole1.y, neg.y);
+                float bottom = (float) Math.max(hole1.y, neg.y);
 
-                //draw the line connects to the ground
-                canvas.drawLine((float) hole.x + 10, (float) hole.y + 10, (float) pos.x + 10, (float) pos.y, red);
+                Matrix matrix = new Matrix();
+                matrix.postRotate((float)Math.toDegrees(-Math.atan((right-left)/(bottom-top))));
+                Bitmap rotatedImage =  Bitmap.createBitmap(resistor, 0, 0, resistor.getWidth(), resistor.getHeight(), matrix, false);
+                //autofritz the resistor to the ground
+//                canvas.drawLine((float) hole1.x + 10, (float) hole1.y + 10, (float) neg.x + 10, (float) neg.y, white);
+                canvas.drawBitmap(rotatedImage, null, new RectF((float)left, (float)top, (float)right, (float)bottom), new Paint());
+
+                //draw the line connects to 5V
+                canvas.drawLine((float) hole.x, (float) hole.y, (float) pos.x, (float) pos.y, red);
 
                 //draw the point for digitalRead
                 canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
@@ -739,26 +743,33 @@ public class MainActivity extends AppCompatActivity {
                 Point tmp1 = getPosNegPoint(pin2, NEG);
                 Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
 
+                Bitmap motor = BitmapFactory.decodeResource(getResources(), R.drawable.dc_motor_leg);
 
-                float x_start = (float) hole.x - 100;
+                float x_start = (float) hole.x - 200;
                 float y_start = 100;
+//                float left = hole2.x;
+//                float right = (float) Math.max(hole2.x, 400) + 10;
+                float top = (float) Math.min(hole2.y-100, neg.y+50);
+                float bottom = (float) Math.max(hole2.y - 100, neg.y+50);
+                canvas.drawBitmap(motor, null, new RectF((float)hole2.x, (float)top, (float)(hole2.x+2.2f*(bottom-top)), (float)bottom), new Paint());
+                canvas.drawLine((float)hole2.x, (float)(hole2.y+20), (float)neg.x, (float)neg.y, yellow);
 
                 canvas.drawText("Base", x_start, y_start, yellow);
                 float temp1 = blue.measureText("Base");
                 canvas.drawLine((float) hole.x + 10, (float) hole.y, x_start + temp1 / 2, y_start + 20, yellow);
                 x_start += blue.measureText("Base") + 20;
 
-                canvas.drawText("Collector", x_start, y_start, red);
-                float temp2 = blue.measureText("Collector");
+                canvas.drawText("Controller", x_start, y_start, red);
+                float temp2 = blue.measureText("Controller");
                 canvas.drawLine((float) hole1.x + 10, (float) hole1.y, x_start + temp2 / 2, y_start + 20, red);
-                x_start += blue.measureText("Collector") + 20;
+                x_start += blue.measureText("Controller") + 20;
 
                 canvas.drawText("Emitter", x_start, y_start, black);
                 float temp3 = blue.measureText("Emitter");
                 canvas.drawLine((float) hole2.x + 10, (float) hole2.y, x_start + temp3 / 2, y_start + 20, black);
             }
-
             autofritz.setImageBitmap(temp);
+            autofritz.setImageAlpha(185);
 
         }catch(Exception e){}
         return temp;
@@ -881,6 +892,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }catch(CvException e){}
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        View decorView = getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+    }
 
     private Bitmap VisualizeCompoPins(Bitmap input_bmp){
         visualizeAllPosition();
@@ -909,7 +934,7 @@ public class MainActivity extends AppCompatActivity {
         visualizeAllPosition();
         Bitmap temp_bmp;
         if (input_bmp != null) temp_bmp = input_bmp;
-        else temp_bmp = Bitmap.createBitmap(clientResolution.getWidth(), clientResolution.getHeight(), Bitmap.Config.ARGB_8888);
+        else temp_bmp = Bitmap.createBitmap(overlay.getWidth(), overlay.getHeight(), Bitmap.Config.ARGB_8888);
 
         if(isholesVisualize) {
             Log.d("VisualizeHoles", "visualizing1234");
@@ -917,6 +942,7 @@ public class MainActivity extends AppCompatActivity {
 
             Paint paintHoles = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintHoles.setColor(Color.YELLOW);
+            paintHoles.setAlpha(100);
 
             Paint paintCompo = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintCompo.setColor(Color.GREEN);
@@ -937,8 +963,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }
+            temp_bmp = style_PosNeg(temp_bmp, null);
             overlay.setImageBitmap(temp_bmp);
-
+            overlay.setImageAlpha(180);
         }
         return temp_bmp;
     }
@@ -1015,7 +1042,7 @@ public class MainActivity extends AppCompatActivity {
                 final String name_tmp = this.name;
                 FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
                 button.setTag(name);
-                button.setBackgroundColor(getResources().getColor(R.color.opwhite));
+                button.setBackgroundColor(Color.TRANSPARENT);
                 RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1050,22 +1077,20 @@ public class MainActivity extends AppCompatActivity {
     private void updateall(String input){
         String name = input.substring(0,input.length()-2);
         currentComponentName = name;
+        componentTitleTextView.setText(currentComponentName);
         if (name.equals("button")){
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "Button </h1>" +
-                            "<b> I/O Type: </b> Input" + "<br />" +
-                            "<b>" + "Pin Type:</b> Digital"+
-                            "<b>" + "Note:</b> A和B、C和D永遠相連"));
+                            "<b> Schematic: </b> <br /> A & B are connected, C & D are connected" + "<br />" +
+                            "<b>" + "Arduino Pin:</b><br /> Digital Input"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 記得要接220~10K歐姆的電阻，避免電流過大"  + "<br />" +
-                            "2. 注意digital read的pin"));
+                            "1. Use a pull-up or pull-down resistor"  + "<br />" +
+                            "2. The resistance must be bigger than 220 ohms"));
             bot_text.setText(Html.fromHtml(
-                    "<b>" + "Example video:" + "</b>" +
-                            "<br />" + "LED radiates when button is pressed." + "<br />"));
+                    "<b>" + "Lecture Video:" + "</b>" ));
 
-            ambient_top_button.setText("一邊接到Power，一邊接電阻到地，Arduino 接與地相連的Pin。");
-            ambient_bot_button.setText("利用產生的程式碼來確保button可以正常運作後才進下一步。");
+            ambient_top_button.setText("Push the button firmly until it cannot go any further.");
+            ambient_bot_button.setText("Please test the button's functionality with Arduino");
 
 
             top_image.setImageResource(R.drawable.button_top);
@@ -1075,7 +1100,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (name.equals("trimpot")) {
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "Trimpot </h1>" +
                             "<b> I/O Type: </b> Input" + "<br />" +
                             "<b>" + "Pin Type:</b> Analog" +
                             "<b>" + "Note:</b> 5V和GND相反，讀取的值會相反"));
@@ -1098,32 +1122,30 @@ public class MainActivity extends AppCompatActivity {
 
         else if (name.equals("transistor")){
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "Transistor </h1>" +
-                            "<b> I/O Type: </b> Output" + "<br />" +
-                            "<b>" + "Pin Type:</b> Digital"));
+                            "<b> Schematic: </b> Output" + "<br />" +
+                            "<b>" + "Arduino Pin:</b> digitalWrite"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
                             "1. 可以將transistor當作switch."  + "<br />" +
-                            "2. 記得collector給power，emitter接地." + "<br />" +
-                            "3. 馬達可以接在CE的迴路當中"));
+                            "2. Base給高電壓，電流會從C留到E。" + "<br />" +
+                            "3. 記得collector給power，emitter接到馬達再接地"));
             bot_text.setText(Html.fromHtml(
-                    "<b>" + "Example video:" + "</b>" +
+                    "<b>" + "Lecture video:" + "</b>" +
                             "<br />" + "Transistor的原理像水龍頭一樣，base就是轉頭，C是水源，E是水槽，電流則是水。\n"));
 
-            ambient_top_button.setText("Base給高電壓，電流會從C留到E。");
+            ambient_top_button.setText("Transistor上面的字面向自己");
             ambient_bot_button.setText("利用生成的程式碼搭配馬達，來確認transistor可以正常運作。");
 
             top_image.setImageResource(R.drawable.transistor_top);
-            mid_image.setImageResource(R.drawable.transistor_mid);
+            mid_image.setImageResource(R.drawable.transistor_new_mid);
             bot_image.setImageResource(R.drawable.transistor_video);
         }
 
         else if (name.equals("IC")){
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "IC (L293D) </h1>" +
                             "<b> 記得IC頭上的半圓形朝左邊。 </b>  <br />" +
                             "<b> 利用Arduino控制1A/2A。</b>  <br />" +
-                            "<b> 1Y and 2Y 接上馬達。 </b> "));
+                            "<b> 控制EN大小來調整轉速。 </b> "));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
                             "1. 控制EN大小來調整轉速"  + "<br />" +
@@ -1141,12 +1163,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (name.equals("motor")){
-            top_text.setText(Html.fromHtml(
-                    "<b>" + "Trimpot:" + "</b>" + "A and B are always connected, C and D either."+
-                            "<br />" +
-                            "<b> I/O Type: </b> Input" +
-                            "<br />" +
-                            "<b>" + "Pin Type:</b> Analog"));
+            top_text.setText(Html.fromHtml(""));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" +
                             "<br />" + "馬達通常被transistor或是IC(L293D)驅動." +
@@ -1162,7 +1179,6 @@ public class MainActivity extends AppCompatActivity {
 
         else if (name.equals("potentiometer")){
             top_text.setText(Html.fromHtml(
-                    "<h1>" + "可變電阻 </h1>" +
                             "<b> I/O Type: </b> Input" + "<br />" +
                             "<b>" + "Pin Type:</b> Analog"));
             mid_text.setText(Html.fromHtml(
@@ -1344,12 +1360,18 @@ public class MainActivity extends AppCompatActivity {
                             for (int j = 0; j < hole_lines_size[i]; j++) {
                                 String[] x_y = holesString[count_temp].split("-");
                                 Point trans = ServerToClient(new Point(Double.valueOf(x_y[0]), Double.valueOf(x_y[1])));
+
+                                trans.x*= ((float)autofritz.getWidth())/clientResolution.getWidth();
+                                trans.y*= ((float)autofritz.getHeight())/clientResolution.getHeight();
+//                                Log.d("autofritz.getWidth()", autofritz.getWidth() + "");
+//                                Log.d("autofritz.getHeight()", autofritz.getHeight() + "");
                                 Log.d("calibration", trans + "");
                                 temp.add(trans);
                                 count_temp++;
                             }
                             holes_position[i] = temp;
                         }
+                        parseComponentsFromServer(testInput);;
                     } catch (Exception e) {
                         Log.d("Exception", e.getMessage());
                     }
@@ -1384,13 +1406,13 @@ public class MainActivity extends AppCompatActivity {
                                         "<b> 9. </b>盡量避免電線交叉。 <br />" ));
 
                         ambient_top_button.setText("!!!!!!!!!!!!! 線 記得 要 貼平 板子!!!!!!!!!!!!");
-                        ambient_bot_button.setText("確定單個元件的arduino邏輯正確才進下一步");
+                        ambient_bot_button.setText("Connect Power rails first !!");
 
                         top_image.setImageResource(R.drawable.style_top);
                         mid_image.setImageResource(R.drawable.style_mid);
                         bot_image.setImageResource(R.drawable.style_bot);
 
-                        VisualizeHoles(style_PosNeg(null, null));
+                        VisualizeHoles(null);
                     }
                     return;
                 }
