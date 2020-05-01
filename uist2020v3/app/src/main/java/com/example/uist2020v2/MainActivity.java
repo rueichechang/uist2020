@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -74,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 //    private String SERVERIP = "104.196.101.18";
     String SERVERIP = "192.168.42.3";
     private String testInputForCal = "calib270-196,290-195,311-195,331-195,352-195,394-194,415-194,435-193,456-193,477-193,518-192,540-192,560-191,581-191,602-191,644-191,665-190,686-189,707-189,728-189,772-188,793-187,814-187,835-186,857-186,270-216,290-216,311-216,332-216,352-216,394-215,415-215,435-215,456-214,477-214,519-213,540-213,560-213,581-213,602-212,645-211,666-211,686-211,708-210,729-210,772-209,793-208,814-208,836-208,857-207,262-276,282-276,302-276,323-275,343-275,364-275,385-274,406-274,426-274,447-274,468-274,488-273,509-273,530-273,551-273,571-272,592-272,613-272,634-271,655-271,676-271,697-271,718-270,740-270,761-269,782-269,803-269,825-268,846-268,868-268,262-297,282-296,302-296,323-296,343-296,364-296,385-295,406-295,426-295,447-294,468-294,489-294,509-294,530-294,551-293,572-293,592-293,613-293,634-292,655-292,676-292,697-291,718-291,740-291,761-290,782-290,804-290,825-289,847-289,868-288,261-318,282-317,302-317,323-317,344-316,364-316,385-316,406-316,426-316,447-315,468-315,489-315,509-315,530-315,551-314,572-314,593-314,613-314,635-313,655-313,677-313,697-313,719-312,740-312,761-312,782-311,804-311,825-311,847-310,868-310,261-338,282-338,303-338,323-337,344-337,364-337,385-337,406-337,426-337,447-337,468-336,489-336,509-336,530-336,551-335,572-335,593-335,614-335,635-334,656-334,676-334,698-333,719-333,740-333,761-333,783-333,804-332,825-332,847-331,868-331,261-359,282-359,303-358,324-359,343-358,364-358,385-358,407-358,426-358,447-357,468-357,489-357,509-357,530-357,551-356,572-356,593-356,614-356,635-356,656-356,677-355,698-355,719-354,740-354,761-354,783-354,804-354,825-353,847-353,868-353,261-419,281-418,302-418,324-418,343-418,364-418,385-418,405-417,427-417,447-417,468-417,489-417,509-417,530-417,551-416,574-416,593-416,614-416,635-415,656-415,677-415,698-415,719-415,740-415,762-414,783-414,804-414,826-414,847-414,869-414,260-440,281-439,302-439,323-439,344-439,364-439,385-438,406-438,427-438,447-438,468-437,489-437,509-437,530-437,551-437,574-437,593-437,614-437,635-437,656-436,677-436,698-436,719-436,741-436,762-436,783-436,805-435,827-435,847-435,869-435,260-461,281-460,302-460,323-460,344-459,364-459,385-459,405-459,427-459,447-459,468-459,489-459,509-458,530-458,551-458,574-458,593-458,614-458,635-458,656-458,677-457,698-457,719-457,741-457,762-457,783-456,805-456,827-457,848-456,869-456,260-482,281-481,302-481,323-481,344-481,364-480,385-480,405-480,427-480,447-480,468-480,489-479,510-479,530-479,551-479,573-479,593-479,614-479,635-478,656-478,677-478,698-478,720-478,741-478,762-478,783-478,805-478,826-478,848-478,869-478,260-502,281-502,302-502,323-502,343-502,365-501,386-501,405-501,427-501,447-501,469-501,490-501,509-500,531-500,551-500,573-500,593-500,614-500,635-500,656-500,677-500,698-500,720-500,741-500,762-499,783-499,805-499,827-499,848-499,870-499,268-564,289-563,309-563,331-563,351-563,394-563,415-563,436-562,456-562,477-562,520-562,541-562,562-561,583-561,604-561,646-561,667-561,689-561,710-561,731-561,774-560,795-560,817-560,838-560,860-560,267-584,288-584,309-584,330-583,351-583,394-583,414-583,435-583,456-583,477-583,519-582,541-582,562-582,583-582,604-582,646-582,667-582,689-582,710-582,731-582,774-582,795-582,817-582,839-582,861-582";
-    private String testInput = "newcptransistor01:359-476,494-526@10-7,10-8,10-9";
-
+//    private String testInput = "newcptransistor01:359-476,494-526@10-7,10-8,10-9";
+    private String testInput = "newcpbutton01:464-350,520-428@5-9,8-9,5-11,8-11";
     private boolean calibrating = false;
     private boolean buildtree = true;
     private boolean isholesVisualize= false;
@@ -373,18 +374,21 @@ public class MainActivity extends AppCompatActivity {
         Bitmap temp;
         if (input_bmp != null) temp = input_bmp;
         else temp = Bitmap.createBitmap(overlay.getWidth(), overlay.getHeight(), Bitmap.Config.ARGB_8888);
+        DashPathEffect effect = new DashPathEffect(new float[] { 5, 5 }, 0);
         Canvas canvas = new Canvas(temp);
         Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
         black.setColor(Color.BLACK);
         black.setTextSize(30);
         black.setFakeBoldText(true);
-        black.setStrokeWidth(5);
+        black.setStrokeWidth(8);
+        black.setPathEffect(effect);
 
         Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
         red.setColor(Color.RED);
         red.setTextSize(30);
         red.setFakeBoldText(true);
-        red.setStrokeWidth(5);
+        red.setStrokeWidth(8);
+        red.setPathEffect(effect);
 
         Point pos1 = holes_position[1].get(0);
         Point pos2 = holes_position[13].get(0);
@@ -546,40 +550,44 @@ public class MainActivity extends AppCompatActivity {
         try {
             Canvas canvas = new Canvas(temp);
             Bitmap resistor = BitmapFactory.decodeResource(getResources(), R.drawable.resistor_new);
-
+            DashPathEffect effect = new DashPathEffect(new float[] { 5, 5 }, 0);
             Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
             white.setColor(Color.WHITE);
+
 //            white.setColor(getResources().getColor(Color.WHITE);
             white.setTextSize(30);
             white.setFakeBoldText(true);
-            white.setStrokeWidth(10);
+            white.setStrokeWidth(8);
+            white.setPathEffect(effect);
 
             Paint red = new Paint(Paint.ANTI_ALIAS_FLAG);
 //            red.setColor(getResources().getColor(R.color.opred));
             red.setColor(Color.RED);
-            red.setStrokeWidth(10);
+            red.setStrokeWidth(8);
             red.setTextSize(40);
             red.setFakeBoldText(true);
-
+            red.setPathEffect(effect);
             Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
 //            black.setColor(getResources().getColor(R.color.opblack));
             black.setColor(Color.BLACK);
-            black.setStrokeWidth(10);
+            black.setStrokeWidth(8);
             black.setTextSize(40);
             black.setFakeBoldText(true);
+            black.setPathEffect(effect);
 
             Paint yellow = new Paint(Paint.ANTI_ALIAS_FLAG);
             yellow.setColor(Color.YELLOW);
 //            yellow.setColor(getResources().getColor(R.color.opyellow));
             yellow.setTextSize(40);
             yellow.setFakeBoldText(true);
-            yellow.setStrokeWidth(10);
-
+            yellow.setStrokeWidth(8);
+            yellow.setPathEffect(effect);
             Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
             blue.setColor(getResources().getColor(R.color.opblue));
             blue.setTextSize(40);
             blue.setFakeBoldText(true);
-            blue.setStrokeWidth(10);
+            blue.setStrokeWidth(8);
+            blue.setPathEffect(effect);
 
 
             String name = electronic.name.substring(0, electronic.name.length() - 2);
@@ -943,6 +951,7 @@ public class MainActivity extends AppCompatActivity {
             Paint paintHoles = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintHoles.setColor(Color.YELLOW);
             paintHoles.setAlpha(100);
+
 
             Paint paintCompo = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintCompo.setColor(Color.GREEN);
@@ -1371,7 +1380,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             holes_position[i] = temp;
                         }
-                        parseComponentsFromServer(testInput);;
+//                        parseComponentsFromServer(testInput);;
                     } catch (Exception e) {
                         Log.d("Exception", e.getMessage());
                     }
@@ -1388,31 +1397,26 @@ public class MainActivity extends AppCompatActivity {
                         temp.setBackgroundResource(android.R.drawable.btn_default);
                         temp.setVisibility(View.INVISIBLE);
                         snapHandler.post(snap_repeat);
-
+                        componentTitleTextView.setText("CircuitStyle");
                         top_text.setText(Html.fromHtml(
-                                "<h1>" + "Circuit Style </h1>" +
-                                        "<b> 1. </b>IC的半圓形朝左邊。 <br />" +
-                                        "<b> 2. </b>確認電阻值不要過大。 <br />" +
-                                        "<b> 3. </b>把已知要用的元件插上去。<br /> "));
+                                "<b> 1. </b>Ensure component's polarity is correct before insertion <br />" +
+                                        "<b> 2. </b>Build and test in subsections. <br />" ));
                         mid_text.setText(Html.fromHtml(
-                                "<b>" + "" + "</b>" + "<br />" +
-                                        "<b> 4. </b>電線不要跨過IC。 <br />" +
-                                        "<b> 5. </b>電線要平貼麵包版。 <br />" +
-                                        "<b> 6. </b>確認每個元件可以動才進下一步。 <br />"));
+                                "<b> 3. </b>Ensure wires/components are trimmed to lay flat against the breadboard. <br />" +
+                                        "<b> 4. </b>Push the component down firmly until it cannot go any further. <br />"));
                         bot_text.setText(Html.fromHtml(
-                                "<b>" + "" + "</b>  <br />" +
-                                        "<b> 7. </b>規劃好麵包版空間。 <br />" +
-                                        "<b> 8. </b>紅線接power，黑線接Ground。 <br />" +
-                                        "<b> 9. </b>盡量避免電線交叉。 <br />" ));
+                                "<b> 5. </b> Keep pin 1 of all IC's pointing the same direction. <br />" +
+                                        "<b> 6. </b> Begin by placing the ICs first. <br />" ));
 
-                        ambient_top_button.setText("!!!!!!!!!!!!! 線 記得 要 貼平 板子!!!!!!!!!!!!");
-                        ambient_bot_button.setText("Connect Power rails first !!");
+                        ambient_top_button.setText("Avoid crossing wires !");
+                        ambient_bot_button.setText("Begin by connecting power and ground rails.");
 
-                        top_image.setImageResource(R.drawable.style_top);
+                        top_image.setImageResource(R.drawable.style_bot);
                         mid_image.setImageResource(R.drawable.style_mid);
-                        bot_image.setImageResource(R.drawable.style_bot);
+                        bot_image.setImageResource(R.drawable.style_top);
 
                         VisualizeHoles(null);
+//                        parseComponentsFromServer(testInput);;
                     }
                     return;
                 }
