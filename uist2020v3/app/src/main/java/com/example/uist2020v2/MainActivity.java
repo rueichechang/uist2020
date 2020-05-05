@@ -2,6 +2,7 @@ package com.example.uist2020v2;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.res.Configuration;
@@ -21,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -29,6 +31,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -72,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView overlay;
     private ImageView autofritz;
     private String app_num = "06";
-//    private String SERVERIP = "104.196.101.18";
-    String SERVERIP = "192.168.42.3";
+    private String SERVERIP = "104.196.101.18";
+//    String SERVERIP = "192.168.42.3";
     private String testInputForCal = "calib270-196,290-195,311-195,331-195,352-195,394-194,415-194,435-193,456-193,477-193,518-192,540-192,560-191,581-191,602-191,644-191,665-190,686-189,707-189,728-189,772-188,793-187,814-187,835-186,857-186,270-216,290-216,311-216,332-216,352-216,394-215,415-215,435-215,456-214,477-214,519-213,540-213,560-213,581-213,602-212,645-211,666-211,686-211,708-210,729-210,772-209,793-208,814-208,836-208,857-207,262-276,282-276,302-276,323-275,343-275,364-275,385-274,406-274,426-274,447-274,468-274,488-273,509-273,530-273,551-273,571-272,592-272,613-272,634-271,655-271,676-271,697-271,718-270,740-270,761-269,782-269,803-269,825-268,846-268,868-268,262-297,282-296,302-296,323-296,343-296,364-296,385-295,406-295,426-295,447-294,468-294,489-294,509-294,530-294,551-293,572-293,592-293,613-293,634-292,655-292,676-292,697-291,718-291,740-291,761-290,782-290,804-290,825-289,847-289,868-288,261-318,282-317,302-317,323-317,344-316,364-316,385-316,406-316,426-316,447-315,468-315,489-315,509-315,530-315,551-314,572-314,593-314,613-314,635-313,655-313,677-313,697-313,719-312,740-312,761-312,782-311,804-311,825-311,847-310,868-310,261-338,282-338,303-338,323-337,344-337,364-337,385-337,406-337,426-337,447-337,468-336,489-336,509-336,530-336,551-335,572-335,593-335,614-335,635-334,656-334,676-334,698-333,719-333,740-333,761-333,783-333,804-332,825-332,847-331,868-331,261-359,282-359,303-358,324-359,343-358,364-358,385-358,407-358,426-358,447-357,468-357,489-357,509-357,530-357,551-356,572-356,593-356,614-356,635-356,656-356,677-355,698-355,719-354,740-354,761-354,783-354,804-354,825-353,847-353,868-353,261-419,281-418,302-418,324-418,343-418,364-418,385-418,405-417,427-417,447-417,468-417,489-417,509-417,530-417,551-416,574-416,593-416,614-416,635-415,656-415,677-415,698-415,719-415,740-415,762-414,783-414,804-414,826-414,847-414,869-414,260-440,281-439,302-439,323-439,344-439,364-439,385-438,406-438,427-438,447-438,468-437,489-437,509-437,530-437,551-437,574-437,593-437,614-437,635-437,656-436,677-436,698-436,719-436,741-436,762-436,783-436,805-435,827-435,847-435,869-435,260-461,281-460,302-460,323-460,344-459,364-459,385-459,405-459,427-459,447-459,468-459,489-459,509-458,530-458,551-458,574-458,593-458,614-458,635-458,656-458,677-457,698-457,719-457,741-457,762-457,783-456,805-456,827-457,848-456,869-456,260-482,281-481,302-481,323-481,344-481,364-480,385-480,405-480,427-480,447-480,468-480,489-479,510-479,530-479,551-479,573-479,593-479,614-479,635-478,656-478,677-478,698-478,720-478,741-478,762-478,783-478,805-478,826-478,848-478,869-478,260-502,281-502,302-502,323-502,343-502,365-501,386-501,405-501,427-501,447-501,469-501,490-501,509-500,531-500,551-500,573-500,593-500,614-500,635-500,656-500,677-500,698-500,720-500,741-500,762-499,783-499,805-499,827-499,848-499,870-499,268-564,289-563,309-563,331-563,351-563,394-563,415-563,436-562,456-562,477-562,520-562,541-562,562-561,583-561,604-561,646-561,667-561,689-561,710-561,731-561,774-560,795-560,817-560,838-560,860-560,267-584,288-584,309-584,330-583,351-583,394-583,414-583,435-583,456-583,477-583,519-582,541-582,562-582,583-582,604-582,646-582,667-582,689-582,710-582,731-582,774-582,795-582,817-582,839-582,861-582";
-//    private String testInput = "newcptransistor01:359-476,494-526@10-7,10-8,10-9";
-    private String testInput = "newcpbutton01:464-350,520-428@5-9,8-9,5-11,8-11";
+    private String testInput = "newcptransistor01:359-476,494-526@10-7,10-8,10-9";
+//    private String testInput = "newcpbutton01:464-350,520-428@5-9,8-9,5-11,8-11";
     private boolean calibrating = false;
     private boolean buildtree = true;
     private boolean isholesVisualize= false;
@@ -186,16 +190,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onBitmapReady(Bitmap bitmap) {
 //                        Bitmap bmp = RotateBitmap(bitmap, -90);
+                        if (!isholesVisualize) commandToServer = "calibration__";
                         Bitmap bmp = RotateBitmap(bitmap, 0);
                         Log.d("checkhands", "size.getWidth():" + size.getWidth());
                         Log.d("checkhands", "size.getHeight():" + size.getHeight());
                         Log.d("checkhands", "mCamera.getPictureSize().getWidth():" + mCamera.getPictureSize().getWidth());
                         Log.d("checkhands", "mCamera.getPictureSize().getHeight():" + mCamera.getPictureSize().getHeight());
-                        if(size.getWidth() == mCamera.getPictureSize().getWidth()) {
+                        if(size.getWidth() == mCamera.getPictureSize().getWidth() && !commandToServer.isEmpty()) {
                             Log.d("checkhands", "take picture2");
-                            MyTaskParams myTaskParams  = new MyTaskParams(bmp, commandToServer,null);
+                            MyTaskParams myTaskParams = new MyTaskParams(bmp, commandToServer, null);
                             SendToServer sendToServer = new SendToServer();
                             sendToServer.execute(myTaskParams);
+                            commandToServer = "";
+
                         } else {
                             Log.d("onBitmapReady", "checking hands");
                             if (isholesVisualize)
@@ -245,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         calibration = (Button)findViewById(R.id.calibration);
         calibration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                commandToServer = "ButtonPressed";
+//                commandToServer = "ButtonPressed";
                 commandToServer = "calibration__";
                 mCamera.takePicture();
                 calibration.setBackgroundColor(0x80ffc857);
@@ -315,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                  else if (currentComponentName.equals("trimpot")) mImageView.setImageResource(R.drawable.trimpot_mid);
                  else if (currentComponentName.equals("potentiometer")) mImageView.setImageResource(R.drawable.potentiometer_mid);
                  else if (currentComponentName.equals("IC")) mImageView.setImageResource(R.drawable.chip_mid);
-                 else if (currentComponentName.equals("transistor")) mImageView.setImageResource(R.drawable.transistor_mid);
+                 else if (currentComponentName.equals("transistor")) mImageView.setImageResource(R.drawable.transistor_new_mid);
                  else if (currentComponentName.equals("motor")) mImageView.setImageResource(R.drawable.motor_mid);
                  else if (currentComponentName.equals("LCD")) mImageView.setImageResource(R.drawable.lcd_datasheet);
             }
@@ -336,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
                 if (currentComponentName.equals("button")) file = R.raw.button_demo;
                 else if (currentComponentName.equals("trimpot")) file = R.raw.trimpot_demo;
                 else if (currentComponentName.equals("potentiometer")) file = R.raw.potentiometer_clip;
-                else if (currentComponentName.equals("transistor")) file = R.raw.transistor_clip;
+                else if (currentComponentName.equals("transistor")) file = R.raw.transistor_lecture2;
 
                 String uriPath= "android.resource://" + getPackageName() + "/" + file;
                 final VideoView mVideoView = (VideoView) dialog.findViewById(R.id.fullscreen_videoview);
@@ -540,6 +547,22 @@ public class MainActivity extends AppCompatActivity {
 
         return temp;
     }
+    private void blinkButton(Button button){
+        Animation anim = new AlphaAnimation(0.2f, 1.0f);
+        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        button.startAnimation(anim);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                view.clearAnimation();
+                //also your extra work here
+            }
+        });
+
+    }
 
     private Bitmap AutoFritz (Bitmap input_bmp, Electronics electronic){
 
@@ -555,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
             white.setColor(Color.WHITE);
 
 //            white.setColor(getResources().getColor(Color.WHITE);
-            white.setTextSize(30);
+            white.setTextSize(25);
             white.setFakeBoldText(true);
             white.setStrokeWidth(8);
             white.setPathEffect(effect);
@@ -564,27 +587,27 @@ public class MainActivity extends AppCompatActivity {
 //            red.setColor(getResources().getColor(R.color.opred));
             red.setColor(Color.RED);
             red.setStrokeWidth(8);
-            red.setTextSize(40);
+            red.setTextSize(25);
             red.setFakeBoldText(true);
             red.setPathEffect(effect);
             Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
 //            black.setColor(getResources().getColor(R.color.opblack));
             black.setColor(Color.BLACK);
             black.setStrokeWidth(8);
-            black.setTextSize(40);
+            black.setTextSize(25);
             black.setFakeBoldText(true);
             black.setPathEffect(effect);
 
             Paint yellow = new Paint(Paint.ANTI_ALIAS_FLAG);
             yellow.setColor(Color.YELLOW);
 //            yellow.setColor(getResources().getColor(R.color.opyellow));
-            yellow.setTextSize(40);
+            yellow.setTextSize(25);
             yellow.setFakeBoldText(true);
             yellow.setStrokeWidth(8);
             yellow.setPathEffect(effect);
             Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
             blue.setColor(getResources().getColor(R.color.opblue));
-            blue.setTextSize(40);
+            blue.setTextSize(20);
             blue.setFakeBoldText(true);
             blue.setStrokeWidth(8);
             blue.setPathEffect(effect);
@@ -624,27 +647,27 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (name.equals("button")) {
                 Point pin = getOtherPoint(electronic.pins.get(0));
-                Point hole = holes_position[(int) pin.x].get((int) pin.y);
+                Point hole = holes_position[(int) pin.x].get((int) pin.y+1);
                 Point tmp = getPosNegPoint(pin, POS);
                 Point pos = holes_position[(int) tmp.x].get((int) tmp.y);
 
                 Point pin1 = getOtherPoint(electronic.pins.get(2));
-                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y);
+                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y+1);
                 Point tmp1 = getPosNegPoint(pin1, NEG);
                 Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
 
                 Point pin2 = getOtherPoint(electronic.pins.get(3));
-                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
+                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y+1);
 
 //                groundHole.x -= 5;
-                neg.y -= 10;
+//                neg.y -= 10;
 //                powerHole.x -= 5;
-                pos.y -= 10;
+//                pos.y -= 10;
 
-                float left = (float) Math.min(hole1.x, neg.x);
-                float right = (float) Math.max(hole1.x, neg.x) + 10;
-                float top = (float) Math.min(hole1.y, neg.y);
-                float bottom = (float) Math.max(hole1.y, neg.y);
+                float left = (float) Math.min(hole1.x+5, neg.x);
+                float right = (float) Math.max(hole1.x+5, neg.x);
+                float top = (float) Math.min(hole1.y+5, neg.y);
+                float bottom = (float) Math.max(hole1.y+5, neg.y);
 
                 Matrix matrix = new Matrix();
                 matrix.postRotate((float)Math.toDegrees(-Math.atan((right-left)/(bottom-top))));
@@ -654,11 +677,12 @@ public class MainActivity extends AppCompatActivity {
                 canvas.drawBitmap(rotatedImage, null, new RectF((float)left, (float)top, (float)right, (float)bottom), new Paint());
 
                 //draw the line connects to 5V
-                canvas.drawLine((float) hole.x, (float) hole.y, (float) pos.x, (float) pos.y, red);
+                canvas.drawLine((float) hole.x+5, (float) hole.y+5, (float) pos.x, (float) pos.y, red);
 
                 //draw the point for digitalRead
                 canvas.drawRect((float) hole2.x, (float) hole2.y, (float) hole2.x + 15, (float) hole2.y + 15, yellow);
-                canvas.drawText("digitalRead", (float) hole2.x - 200, (float) hole2.y + 0, yellow);
+                canvas.drawText("digitalRead", (float) hole2.x - 100, (float) hole2.y + 0, yellow);
+                electronic.button.setBackground(ContextCompat.getDrawable(this, R.drawable.button));
 
             } else if (name.equals("trimpot") || name.equals("potentiometer")) {
                 Point pin = getOtherPoint(electronic.pins.get(0));
@@ -739,42 +763,51 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (name.equals("transistor")) {
                 Point pin = getOtherPoint(electronic.pins.get(0));
-                Point hole = holes_position[(int) pin.x].get((int) pin.y);
+                Point hole = holes_position[(int) pin.x].get((int) pin.y+1);
 
                 Point pin1 = getOtherPoint(electronic.pins.get(1));
-                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y);
+                Point hole1 = holes_position[(int) pin1.x].get((int) pin1.y+1);
                 Point tmp = getPosNegPoint(pin1, POS);
                 Point pos = holes_position[(int) tmp.x].get((int) tmp.y);
 
                 Point pin2 = getOtherPoint(electronic.pins.get(2));
-                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y);
+                Point hole2 = holes_position[(int) pin2.x].get((int) pin2.y+1);
                 Point tmp1 = getPosNegPoint(pin2, NEG);
                 Point neg = holes_position[(int) tmp1.x].get((int) tmp1.y);
 
                 Bitmap motor = BitmapFactory.decodeResource(getResources(), R.drawable.dc_motor_leg);
-
-                float x_start = (float) hole.x - 200;
+//                Bitmap transistor = BitmapFactory.decodeResource(getResources(), R.drawable.transistor_npn);
+                float x_start = (float) hole.x - 80;
                 float y_start = 100;
 //                float left = hole2.x;
 //                float right = (float) Math.max(hole2.x, 400) + 10;
                 float top = (float) Math.min(hole2.y-100, neg.y+50);
                 float bottom = (float) Math.max(hole2.y - 100, neg.y+50);
                 canvas.drawBitmap(motor, null, new RectF((float)hole2.x, (float)top, (float)(hole2.x+2.2f*(bottom-top)), (float)bottom), new Paint());
+//                canvas.drawBitmap(transistor, null, new RectF((float)electronic.boxes[0], (float)electronic.boxes[0], (float)(hole2.x+2.2f*(bottom-top)), (float)bottom), new Paint());
                 canvas.drawLine((float)hole2.x, (float)(hole2.y+20), (float)neg.x, (float)neg.y, yellow);
 
                 canvas.drawText("Base", x_start, y_start, yellow);
                 float temp1 = blue.measureText("Base");
                 canvas.drawLine((float) hole.x + 10, (float) hole.y, x_start + temp1 / 2, y_start + 20, yellow);
                 x_start += blue.measureText("Base") + 20;
+                canvas.drawText("analogWrite", (float) hole.x - 140, (float) hole.y , yellow);
+                canvas.drawRect((float) hole.x, (float) hole.y, (float) hole.x + 15, (float) hole.y + 15, yellow);
 
                 canvas.drawText("Controller", x_start, y_start, red);
                 float temp2 = blue.measureText("Controller");
                 canvas.drawLine((float) hole1.x + 10, (float) hole1.y, x_start + temp2 / 2, y_start + 20, red);
                 x_start += blue.measureText("Controller") + 20;
 
+                //canvas.drawRect((float)electronic.boxes.get(0).x,(float)electronic.boxes.get(0).y,(float)electronic.boxes.get(1).x,(float)electronic.boxes.get(1).y, yellow);
                 canvas.drawText("Emitter", x_start, y_start, black);
                 float temp3 = blue.measureText("Emitter");
                 canvas.drawLine((float) hole2.x + 10, (float) hole2.y, x_start + temp3 / 2, y_start + 20, black);
+//                FrameLayout.LayoutParams rel_btn = (FrameLayout.LayoutParams) electronic.button.getLayoutParams();
+//                rel_btn.topMargin = rel_btn.topMargin-50;
+//                rel_btn.height = rel_btn.height+50;
+//                electronic.button.setLayoutParams(rel_btn);
+                electronic.button.setBackground(ContextCompat.getDrawable(this, R.drawable.transistor_npn));
             }
             autofritz.setImageBitmap(temp);
             autofritz.setImageAlpha(185);
@@ -1022,8 +1055,8 @@ public class MainActivity extends AppCompatActivity {
         if (serverResolution != null && clientResolution != null){
             int serverWidth = 1280;
             int serverHeight = 960;
-            int clientWidth = 1280;
-            int clientHeight = 960;
+            int clientWidth = autofritz.getWidth();
+            int clientHeight = autofritz.getHeight();
 
             Point temp = new Point(point.x/serverWidth * clientWidth, point.y/serverHeight * clientHeight);
             return temp;
@@ -1041,18 +1074,20 @@ public class MainActivity extends AppCompatActivity {
         Electronics(final String name, final List<Point> boxes, final List<Point> pins, final Button button) {
             this.name = name;
             this.boxes = boxes;
-            this.pins = pins;
 
+
+            this.pins = pins;
             String nametmp = name.substring(0,name.length()-2);
 
             if(button != null && (nametmp.equals("IC") || nametmp.equals("potentiometer") || nametmp.equals("trimpot") ||
                     nametmp.equals("motor") || nametmp.equals("button")) || nametmp.equals("transistor")) {
 
                 final String name_tmp = this.name;
-                FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
+                FrameLayout frameLayout = findViewById(R.id.buttonFrame);
                 button.setTag(name);
+
                 button.setBackgroundColor(Color.TRANSPARENT);
-                RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
+                FrameLayout.LayoutParams rel_btn = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 rel_btn.leftMargin = (int) boxes.get(0).x;
@@ -1060,7 +1095,6 @@ public class MainActivity extends AppCompatActivity {
 
                 rel_btn.width = Math.abs((int)(boxes.get(0).x - boxes.get(1).x));
                 rel_btn.height = Math.abs((int)(boxes.get(0).y - boxes.get(1).y));
-                
                 button.setLayoutParams(rel_btn);
 //            button.getBackground().setAlpha(64);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -1072,7 +1106,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("ButtonPressed", "ButtonPressed");
 
                         updateall(name_tmp);
-                        updateOverlay(null, new Electronics(name, boxes, pins, null));
+                        updateOverlay(null, Electronics.this);
                     }
                 });
                 this.button = button;
@@ -1131,23 +1165,25 @@ public class MainActivity extends AppCompatActivity {
 
         else if (name.equals("transistor")){
             top_text.setText(Html.fromHtml(
-                            "<b> Schematic: </b> Output" + "<br />" +
-                            "<b>" + "Arduino Pin:</b> digitalWrite"));
+                            "<b> Schematic: </b>" + "<br />" +
+                                    "As a voltage applied to the base, current flow through collector to emitter" + "<br />" +
+                            "<b>" + "Arduino Pin:</b> analogWrite"));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" + "<br />" +
-                            "1. 可以將transistor當作switch."  + "<br />" +
-                            "2. Base給高電壓，電流會從C留到E。" + "<br />" +
-                            "3. 記得collector給power，emitter接到馬達再接地"));
+                            "1. Use a transistor as a switch."  + "<br />" +
+                            "2. Motor should be on the collector-emitter path"));
             bot_text.setText(Html.fromHtml(
-                    "<b>" + "Lecture video:" + "</b>" +
-                            "<br />" + "Transistor的原理像水龍頭一樣，base就是轉頭，C是水源，E是水槽，電流則是水。\n"));
+                            "<a href=\"https://itp.nyu.edu/physcomp/labs/motors-and-transistors/using-a-transistor-to-control-high-current-loads-with-an-arduino/\">Lecture web and video</a>"));
+            bot_text.setMovementMethod(LinkMovementMethod.getInstance());
 
-            ambient_top_button.setText("Transistor上面的字面向自己");
-            ambient_bot_button.setText("利用生成的程式碼搭配馬達，來確認transistor可以正常運作。");
+
+            ambient_top_button.setText("The black / flat side should face to you");
+            ambient_bot_button.setText("Check if the transistor works wit a motor");
 
             top_image.setImageResource(R.drawable.transistor_top);
             mid_image.setImageResource(R.drawable.transistor_new_mid);
-            bot_image.setImageResource(R.drawable.transistor_video);
+            bot_image.setImageResource(R.drawable.transistor_video_new);
+
         }
 
         else if (name.equals("IC")){
@@ -1175,11 +1211,11 @@ public class MainActivity extends AppCompatActivity {
             top_text.setText(Html.fromHtml(""));
             mid_text.setText(Html.fromHtml(
                     "<b>" + "Tips:" + "</b>" +
-                            "<br />" + "馬達通常被transistor或是IC(L293D)驅動." +
-                            "<br />" + "電源跟地相反，馬達轉動方向相反."));
+                            "<br />" + "Can be controlled by a transistor or a h-bridge chip" +
+                            "<br />" + "Reverse current to reverse rotation"));
 
-            ambient_top_button.setText("這邊可以利用5V來作為電源");
-            ambient_bot_button.setText("確保你的馬達正常運作");
+            ambient_top_button.setText("Ensure to use an additional power supply to drive a motor");
+            ambient_bot_button.setText("Please test it before connecting other components");
 
             top_image.setImageResource(R.drawable.motor_top);
             mid_image.setImageResource(R.drawable.motor_mid);
@@ -1229,6 +1265,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else{ }
+        blinkButton(ambient_top_button);
+        blinkButton(ambient_bot_button);
     }
     private static class MyTaskParams {
         String command;
@@ -1264,6 +1302,7 @@ public class MainActivity extends AppCompatActivity {
                     catch (Exception e) { Log.d("ClientActivity", e.getMessage()); }
                 }
                 socket = new Socket(SERVERIP, PORT);
+
                 if (socket == null)Log.d("ClientActivity", "socket is null");
                 if (socket != null) {
                     int cont = 1;
@@ -1370,8 +1409,8 @@ public class MainActivity extends AppCompatActivity {
                                 String[] x_y = holesString[count_temp].split("-");
                                 Point trans = ServerToClient(new Point(Double.valueOf(x_y[0]), Double.valueOf(x_y[1])));
 
-                                trans.x*= ((float)autofritz.getWidth())/clientResolution.getWidth();
-                                trans.y*= ((float)autofritz.getHeight())/clientResolution.getHeight();
+                                //trans.x*= ((float)autofritz.getWidth())/clientResolution.getWidth();
+                                //trans.y*= ((float)autofritz.getHeight())/clientResolution.getHeight();
 //                                Log.d("autofritz.getWidth()", autofritz.getWidth() + "");
 //                                Log.d("autofritz.getHeight()", autofritz.getHeight() + "");
                                 Log.d("calibration", trans + "");
@@ -1390,6 +1429,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         calibrating = false;
                         isholesVisualize = true;
+                        commandToServer = "";
                         if (buildtree) build_tree(holes_position);
                         Toast.makeText(getApplicationContext(), "calibration success", Toast.LENGTH_SHORT).show();
 
@@ -1397,18 +1437,16 @@ public class MainActivity extends AppCompatActivity {
                         temp.setBackgroundResource(android.R.drawable.btn_default);
                         temp.setVisibility(View.INVISIBLE);
                         snapHandler.post(snap_repeat);
-                        componentTitleTextView.setText("CircuitStyle");
+                        componentTitleTextView.setText("Circuit Style");
                         top_text.setText(Html.fromHtml(
-                                "<b> 1. </b>Ensure component's polarity is correct before insertion <br />" +
-                                        "<b> 2. </b>Build and test in subsections. <br />" ));
+                                "<b> 1. </b>Ensure component's polarity is correct before insertion <br />" ));
                         mid_text.setText(Html.fromHtml(
-                                "<b> 3. </b>Ensure wires/components are trimmed to lay flat against the breadboard. <br />" +
-                                        "<b> 4. </b>Push the component down firmly until it cannot go any further. <br />"));
+                                "<b> 2. </b>Ensure wires/components are trimmed to lay flat against the breadboard. <br />"));
                         bot_text.setText(Html.fromHtml(
-                                "<b> 5. </b> Keep pin 1 of all IC's pointing the same direction. <br />" +
-                                        "<b> 6. </b> Begin by placing the ICs first. <br />" ));
+                                "<b> 3. </b> Begin by placing the ICs first and keep pin 1 of all IC's pointing the same direction. <br />" ));
 
                         ambient_top_button.setText("Avoid crossing wires !");
+
                         ambient_bot_button.setText("Begin by connecting power and ground rails.");
 
                         top_image.setImageResource(R.drawable.style_bot);
@@ -1416,7 +1454,7 @@ public class MainActivity extends AppCompatActivity {
                         bot_image.setImageResource(R.drawable.style_top);
 
                         VisualizeHoles(null);
-//                        parseComponentsFromServer(testInput);;
+                        //parseComponentsFromServer(testInput);;
                     }
                     return;
                 }
@@ -1432,8 +1470,12 @@ public class MainActivity extends AppCompatActivity {
                     List<Point> input_points_list = new ArrayList<Point>();
                     for (String point : points){
                         String [] x_y = point.split("-");
-                        Point trans = bitmapToFrameLayout(new Point (Double.valueOf(x_y[0]), Double.valueOf(x_y[1])));
+
+                        Point trans = ServerToClient(new Point(Double.valueOf(x_y[0]), Double.valueOf(x_y[1])));
                         Log.d("boxes_trans", trans.toString());
+                        //trans.x*= ((float)autofritz.getWidth())/clientResolution.getWidth();
+                        //trans.y*= ((float)autofritz.getHeight())/clientResolution.getHeight();
+
 //                        Log.d("boxes_trans2", bitmapToFrameLayout(trans).toString());
                         input_points_list.add(trans);
                     }
@@ -1502,6 +1544,8 @@ public class MainActivity extends AppCompatActivity {
                 for (String point : points) {
                     String [] x_y = point.split("-");
                     Point trans = bitmapToFrameLayout(new Point (Double.valueOf(x_y[0]), Double.valueOf(x_y[1])));
+                    trans.x*= ((float)autofritz.getWidth())/clientResolution.getWidth();
+                    trans.y*= ((float)autofritz.getHeight())/clientResolution.getHeight();
                     input_points_list.add(trans);
                 }
                 ///receive pins points
@@ -1523,12 +1567,12 @@ public class MainActivity extends AppCompatActivity {
 
                         Button button = new Button (this);
                         final String name_tmp = electronic.name;
-                        FrameLayout frameLayout = findViewById(R.id.preview_framelayout);
+                        FrameLayout frameLayout = findViewById(R.id.buttonFrame);
                         button.setTag(electronic.name);
-//                        button.setBackgroundResource(android.R.drawable.btn_star);
+                        button.setBackgroundResource(android.R.drawable.btn_star);
                         button.setBackgroundColor(getResources().getColor(R.color.opwhite));
 
-                        RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
+                        FrameLayout.LayoutParams rel_btn = new FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                         rel_btn.leftMargin = (int) electronic.boxes.get(0).x;
@@ -1548,7 +1592,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("ButtonPressed", "ButtonPressed");
 
                                 updateall(name_tmp);
-                                updateOverlay(null, new Electronics(electronic.name, electronic.boxes, electronic.pins, null));
+                                updateOverlay(null, electronic);
                             }
                         });
                         electronic.button = button;
@@ -1582,9 +1626,9 @@ public class MainActivity extends AppCompatActivity {
                             currentComponents.remove(i);
                             autofritz.setImageBitmap(null);
                             overlay.setImageBitmap(null);
-//                            ViewGroup layout = (ViewGroup) electronic.button.getParent();
-//                            if(null!=layout) //for safety only  as you are doing onClick
-//                                layout.removeView(electronic.button);
+                            ViewGroup layout = (ViewGroup) electronic.button.getParent();
+                            if(null!=layout) //for safety only  as you are doing onClick
+                                layout.removeView(electronic.button);
                         }
                         i += 1;
                     }
